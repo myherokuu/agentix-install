@@ -82,9 +82,7 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     }
 
-    .user-dropdown.show {
-      display: block;
-    }
+    .user-dropdown.show { display: block; }
 
     .user-dropdown button {
       width: 100%;
@@ -105,25 +103,15 @@
       color: var(--text-primary);
     }
 
-    .user-dropdown button.danger {
-      color: var(--red);
-    }
-
-    .user-dropdown button.danger:hover {
-      background: rgba(239, 68, 68, 0.1);
-    }
-
     .dash-content {
       flex: 1;
-      padding: 96px 2rem 2rem;
-      max-width: 1200px;
+      padding: 96px 2rem 3rem;
+      max-width: 960px;
       margin: 0 auto;
       width: 100%;
     }
 
-    .dash-welcome {
-      margin-bottom: 3rem;
-    }
+    .dash-welcome { margin-bottom: 2.5rem; }
 
     .dash-welcome h1 {
       font-size: 1.75rem;
@@ -137,10 +125,17 @@
       color: var(--text-secondary);
     }
 
-    .dash-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+    .dash-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .dash-section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+      margin-bottom: 0.75rem;
     }
 
     .dash-card {
@@ -150,8 +145,8 @@
       padding: 2rem;
     }
 
-    .dash-card.full {
-      grid-column: 1 / -1;
+    .dash-card + .dash-card {
+      margin-top: 1rem;
     }
 
     .dash-card-header {
@@ -169,10 +164,16 @@
       gap: 8px;
     }
 
-    .dash-card-header h3 span {
-      font-size: 1.1rem;
+    .dash-card-header h3 span { font-size: 1.1rem; }
+
+    .dash-card h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
     }
 
+    /* API Key */
     .api-key-display {
       display: flex;
       align-items: center;
@@ -200,9 +201,7 @@
       user-select: none;
     }
 
-    .copy-btn,
-    .regen-btn,
-    .toggle-btn {
+    .copy-btn, .regen-btn, .toggle-btn {
       padding: 8px 14px;
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -216,9 +215,7 @@
       white-space: nowrap;
     }
 
-    .copy-btn:hover,
-    .regen-btn:hover,
-    .toggle-btn:hover {
+    .copy-btn:hover, .regen-btn:hover, .toggle-btn:hover {
       border-color: var(--border-hover);
       color: var(--text-primary);
       background: var(--bg-card-hover);
@@ -230,6 +227,32 @@
       line-height: 1.6;
     }
 
+    /* About */
+    .about-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .about-text p { margin-bottom: 0.5rem; }
+
+    .about-text a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+
+    .about-text a:hover { text-decoration: underline; }
+
+    .about-text code, .inline-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      background: var(--bg-primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-light);
+    }
+
+    /* Cmd box */
     .cmd-box {
       background: var(--bg-primary);
       border: 1px solid var(--border);
@@ -244,6 +267,7 @@
 
     .cmd-box .prompt { color: var(--accent-light); }
     .cmd-box .cmd { color: var(--text-primary); }
+    .cmd-box .comment { color: var(--text-muted); }
 
     .cmd-copy-btn {
       position: absolute;
@@ -265,76 +289,84 @@
       color: var(--text-primary);
     }
 
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      padding: 12px 20px;
-      background: var(--green);
-      color: white;
+    /* Tabs */
+    .install-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      font-weight: 500;
-      transform: translateY(20px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 999;
+      overflow: hidden;
     }
 
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    @media (max-width: 768px) {
-      .dash-grid {
-        grid-template-columns: 1fr;
-      }
-      .stat-row {
-        flex-direction: column;
-      }
-      .user-name { display: none; }
-      .roles-header, .roles-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
-      .roles-header span:nth-child(2),
-      .roles-header span:nth-child(3) { display: none; }
-      .roles-row span:nth-child(3) { display: none; }
-      .lifecycle-steps { gap: 0.75rem; }
-      .models-grid { grid-template-columns: 1fr; }
-    }
-
-    .about-text {
-      font-size: 0.9rem;
+    .install-tab {
+      flex: 1;
+      padding: 10px;
+      background: transparent;
+      border: none;
       color: var(--text-secondary);
-      line-height: 1.7;
-    }
-
-    .about-text p {
-      margin-bottom: 0.5rem;
-    }
-
-    .about-text a {
-      color: var(--accent-light);
-      text-decoration: none;
-    }
-
-    .about-text a:hover {
-      text-decoration: underline;
-    }
-
-    .about-text code {
-      font-family: 'JetBrains Mono', monospace;
       font-size: 0.82rem;
-      background: var(--bg-primary);
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: var(--accent-light);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: inherit;
+      text-align: center;
     }
 
+    .install-tab.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .install-tab:not(.active):hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    .install-panel { display: none; }
+    .install-panel.active { display: block; }
+
+    .install-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .install-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .install-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      color: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .install-step-content {
+      flex: 1;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .install-step-content strong {
+      color: var(--text-primary);
+    }
+
+    /* Roles table */
     .roles-table {
-      margin-top: 1.25rem;
+      margin-top: 1rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       overflow: hidden;
@@ -342,7 +374,7 @@
 
     .roles-header {
       display: grid;
-      grid-template-columns: 80px 1fr 80px;
+      grid-template-columns: 70px 1fr 70px;
       gap: 1rem;
       padding: 10px 16px;
       background: var(--bg-primary);
@@ -356,7 +388,7 @@
 
     .roles-row {
       display: grid;
-      grid-template-columns: 80px 1fr 80px;
+      grid-template-columns: 70px 1fr 70px;
       gap: 1rem;
       padding: 10px 16px;
       font-size: 0.85rem;
@@ -365,9 +397,7 @@
       align-items: center;
     }
 
-    .roles-row:last-child {
-      border-bottom: none;
-    }
+    .roles-row:last-child { border-bottom: none; }
 
     .roles-row code {
       font-family: 'JetBrains Mono', monospace;
@@ -381,18 +411,18 @@
       font-size: 0.85rem;
     }
 
+    /* Lifecycle */
     .lifecycle-steps {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      margin-top: 0.25rem;
     }
 
     .lifecycle-step {
       display: flex;
       gap: 14px;
       align-items: flex-start;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text-secondary);
       line-height: 1.6;
     }
@@ -421,6 +451,7 @@
       color: var(--accent-light);
     }
 
+    /* Models */
     .models-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -443,6 +474,149 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       color: var(--text-muted);
+    }
+
+    /* Features list */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .features-category h4 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .features-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .feature-item {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .feature-item::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .feature-item strong { color: var(--text-primary); }
+
+    /* API table */
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .api-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .api-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .api-table tr:last-child td { border-bottom: none; }
+
+    .api-table .method {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .api-table .method.get { background: var(--green-glow); color: var(--green); }
+    .api-table .method.post { background: var(--accent-glow); color: var(--accent-light); }
+
+    .api-table code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-primary);
+    }
+
+    /* File tree */
+    .file-tree {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+
+    .file-tree .dir { color: var(--accent-light); }
+    .file-tree .file { color: var(--text-muted); }
+    .file-tree .comment { color: var(--text-muted); font-style: italic; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 12px 20px;
+      background: var(--green);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Note box */
+    .note-box {
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-top: 1rem;
+    }
+
+    .note-box strong { color: var(--accent-light); }
+
+    @media (max-width: 768px) {
+      .dash-content { padding: 80px 1rem 2rem; }
+      .user-name { display: none; }
+      .roles-header, .roles-row {
+        grid-template-columns: 70px 1fr;
+      }
+      .roles-header span:nth-child(3), .roles-row span:nth-child(3) { display: none; }
+      .models-grid { grid-template-columns: 1fr; }
+      .install-tabs { flex-direction: column; }
     }
   </style>
 </head>
@@ -473,10 +647,9 @@
         <p>Here's your AGENTIX control panel.</p>
       </div>
 
-      <div class="dash-grid">
-
-        <!-- API Key Card -->
-        <div class="dash-card full">
+      <!-- API Key -->
+      <div class="dash-section">
+        <div class="dash-card">
           <div class="dash-card-header">
             <h3><span>🔑</span> API Key</h3>
             <button class="regen-btn" id="btn-regen">Regenerate</button>
@@ -488,57 +661,201 @@
           </div>
           <p class="api-key-note">Use this key to authenticate API requests. Keep it secret — treat it like a password. <a href="validate.html" style="color:var(--accent-light);">Validate a key →</a></p>
         </div>
+      </div>
 
-        <!-- About AGENTIX -->
-        <div class="dash-card full">
-          <div class="dash-card-header">
-            <h3><span>◈</span> About AGENTIX</h3>
-          </div>
+      <!-- About -->
+      <div class="dash-section">
+        <div class="dash-section-label">About</div>
+        <div class="dash-card">
           <div class="about-text">
             <p>A local software-house control panel for multi-agent development, built on <a href="https://opencode.ai" target="_blank">opencode</a>. One tool, six role agents, different free models per role — coordinated through plain status files instead of a message bus, so the whole protocol is just text you can read in any editor.</p>
           </div>
           <div class="cmd-box" style="margin-top:1.25rem;">
-            <div style="color:var(--text-primary);"><span style="color:var(--accent-light)">&lt;User&gt;</span>  ──►  <span style="color:var(--text-primary)">AGENTIX</span> <span style="color:var(--text-muted)">(http://127.0.0.1:9999)</span></div>
-            <div style="color:var(--text-muted)">    │</div>
-            <div style="color:var(--text-muted)">    ├── creates/links a project (folder/repo, any stack)</div>
-            <div style="color:var(--text-muted)">    ├── initializes .agents/ + tasks/board.md + CLAUDE.md</div>
-            <div style="color:var(--text-muted)">    ├── spawns  opencode run --agent &lt;role&gt; -m &lt;model&gt; "task"</div>
-            <div style="color:var(--text-muted)">    └── renders live: agent statuses, task board, run logs</div>
+            <div><span style="color:var(--accent-light)">&lt;User&gt;</span>  ──►  <span class="cmd">AGENTIX</span> <span class="comment">(http://127.0.0.1:9999)</span></div>
+            <div class="comment">    │</div>
+            <div class="comment">    ├── creates/links a project (folder/repo, any stack e.g. Laravel PHP)</div>
+            <div class="comment">    ├── initializes .agents/ + tasks/board.md + CLAUDE.md + role config</div>
+            <div class="comment">    ├── spawns  opencode run --agent &lt;role&gt; -m &lt;model&gt; "task"</div>
+            <div class="comment">    │            (runs inside the project folder, with real tool use)</div>
+            <div class="comment">    └── renders live: agent statuses, task board, run logs, handoffs, versions</div>
           </div>
         </div>
+      </div>
 
-        <!-- Quick Start -->
-        <div class="dash-card full">
-          <div class="dash-card-header">
-            <h3><span>⚡</span> Quick start</h3>
+      <!-- Installation -->
+      <div class="dash-section">
+        <div class="dash-section-label">Installation</div>
+        <div class="dash-card">
+          <div class="install-tabs">
+            <button class="install-tab active" data-tab="docker">Docker</button>
+            <button class="install-tab" data-tab="native">Native</button>
           </div>
-          <div class="cmd-box">
-            <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
-            <div><span class="prompt">$</span> <span class="cmd">cd center</span></div>
-            <div><span class="prompt">$</span> <span class="cmd">./run.sh</span>          <span style="color:var(--text-muted)"># → http://127.0.0.1:9999</span></div>
+
+          <div class="install-panel active" id="panel-docker">
+            <div class="about-text">
+              <p><strong>Recommended.</strong> Everything runs inside the container — portal, opencode CLI, Playwright Chromium, LibreOffice, Node. No host dependencies beyond Docker and Git.</p>
+            </div>
+
+            <div class="install-steps" style="margin-top:1.25rem;">
+              <div class="install-step">
+                <div class="install-step-num">1</div>
+                <div class="install-step-content">
+                  <strong>Clone the repo</strong>:
+                  <div class="cmd-box" style="margin-top:8px;">
+                    <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+                    <div><span class="prompt">$</span> <span class="cmd">git clone https://github.com/myherokuu/agentix-code.git</span></div>
+                    <div><span class="prompt">$</span> <span class="cmd">cd agentix-code</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="install-step">
+                <div class="install-step-num">2</div>
+                <div class="install-step-content">
+                  <strong>Install Docker</strong> if you don't have it:<br>
+                  <span class="inline-code">macOS</span> — <span class="inline-code">brew install --cask docker</span> (open Docker Desktop once)<br>
+                  <span class="inline-code">Linux</span> — <span class="inline-code">sudo apt-get install docker.io docker-compose-plugin</span><br>
+                  <span class="inline-code">Windows</span> — <a href="https://docs.docker.com/get-docker/" target="_blank" style="color:var(--accent-light);">Docker Desktop</a> (needs WSL2)
+                </div>
+              </div>
+              <div class="install-step">
+                <div class="install-step-num">3</div>
+                <div class="install-step-content">
+                  <strong>Run bootstrap script</strong> (checks Docker, sets up .env, starts everything):
+                  <div class="cmd-box" style="margin-top:8px;">
+                    <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+                    <div><span class="prompt">$</span> <span class="cmd">./bootstrap/run-myagents.sh</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="install-step">
+                <div class="install-step-num">4</div>
+                <div class="install-step-content">
+                  <strong>Or manually with Docker Compose</strong>:
+                  <div class="cmd-box" style="margin-top:8px;">
+                    <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+                    <div><span class="prompt">$</span> <span class="cmd">cp .env.example .env</span>   <span class="comment"># edit PROJECTS_DIR</span></div>
+                    <div><span class="prompt">$</span> <span class="cmd">docker compose -f docker/compose.yml up --build</span></div>
+                  </div>
+                  <p class="api-key-note" style="margin-top:8px;">Register projects using paths under <span class="inline-code">/workspace/projects/...</span> (where PROJECTS_DIR is mounted). Runtime state lives in the <span class="inline-code">myagents-data</span> Docker volume.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="note-box">
+              <strong>Docker auto-restart:</strong> <span class="inline-code">docker/compose.yml</span> sets <span class="inline-code">restart: unless-stopped</span> — Docker restarts the container on crash, on any OS.
+            </div>
           </div>
-          <p class="api-key-note" style="margin-top:1rem;"><code style="color:var(--accent-light);background:var(--bg-primary);padding:2px 6px;border-radius:4px;">./run.sh</code> installs Python deps and Playwright Chromium, and installs <code style="color:var(--accent-light);background:var(--bg-primary);padding:2px 6px;border-radius:4px;">opencode</code> automatically if missing.</p>
-          <div class="cmd-box" style="margin-top:10px;">
-            <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
-            <div><span class="prompt">$</span> <span class="cmd">./bootstrap/run-myagents.sh</span>    <span style="color:var(--text-muted)"># Docker path</span></div>
+
+          <div class="install-panel" id="panel-native">
+            <div class="about-text">
+              <p>Runs directly on your machine. <span class="inline-code">./run.sh</span> installs Python deps, Playwright Chromium, and <span class="inline-code">opencode</span> automatically if missing.</p>
+            </div>
+
+            <div class="install-steps" style="margin-top:1.25rem;">
+              <div class="install-step">
+                <div class="install-step-num">1</div>
+                <div class="install-step-content">
+                  <strong>Clone the repo</strong>:
+                  <div class="cmd-box" style="margin-top:8px;">
+                    <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+                    <div><span class="prompt">$</span> <span class="cmd">git clone https://github.com/myherokuu/agentix-code.git</span></div>
+                    <div><span class="prompt">$</span> <span class="cmd">cd agentix-code</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="install-step">
+                <div class="install-step-num">2</div>
+                <div class="install-step-content">
+                  <strong>Quick start</strong>:
+                  <div class="cmd-box" style="margin-top:8px;">
+                    <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+                    <div><span class="prompt">$</span> <span class="cmd">cd center</span></div>
+                    <div><span class="prompt">$</span> <span class="cmd">./run.sh</span>          <span class="comment"># → http://127.0.0.1:9999</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="install-step">
+                <div class="install-step-num">3</div>
+                <div class="install-step-content">
+                  <strong>Optional deps</strong> (warned but not auto-installed):<br>
+                  <span class="inline-code">LibreOffice</span> — for .docx/Calc export. <span class="inline-code">brew install --cask libreoffice</span> or <span class="inline-code">sudo apt install libreoffice</span><br>
+                  <span class="inline-code">Node.js</span> — for artifacts-builder skill. <span class="inline-code">brew install node</span> or nodesource/nvm
+                </div>
+              </div>
+              <div class="install-step">
+                <div class="install-step-num">4</div>
+                <div class="install-step-content">
+                  <strong>Optional: auto-restart on crash</strong> (macOS only):
+                  <div class="cmd-box" style="margin-top:8px;">
+                    <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+                    <div><span class="prompt">$</span> <span class="cmd">./supervisor_install.sh</span></div>
+                  </div>
+                  <p class="api-key-note" style="margin-top:8px;">Installs a <span class="inline-code">launchd</span> user agent with KeepAlive. Logs at <span class="inline-code">data/logs/portal.{out,err}.log</span>.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="note-box">
+              <strong>Backups:</strong> <span class="inline-code">data/</span> is backed up every 6 hours to <span class="inline-code">center/backups/*.tar.gz</span> (last 14 kept). Trigger from the <strong>Services</strong> dropdown in the topbar.
+            </div>
           </div>
         </div>
+      </div>
 
-        <!-- How it works -->
-        <div class="dash-card full">
-          <div class="dash-card-header">
-            <h3><span>◉</span> How the agentic system works</h3>
-          </div>
+      <!-- Prerequisites -->
+      <div class="dash-section">
+        <div class="dash-section-label">Prerequisites</div>
+        <div class="dash-card">
           <div class="about-text">
-            <p><strong>The contract:</strong> Registering a project writes a <code>CLAUDE.md</code> — the rules every spawned agent reads before doing anything.</p>
+            <p><strong>Git</strong> — required to clone the repo. Most systems have it pre-installed. Check with <span class="inline-code">git --version</span>.</p>
+            <p><strong>Docker</strong> (recommended path) or <strong>Python 3.10+</strong> (native path) — see installation tabs below.</p>
           </div>
+          <div class="cmd-box" style="margin-top:1rem;">
+            <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
+            <div><span class="prompt">$</span> <span class="cmd">git clone https://github.com/myherokuu/agentix-code.git</span></div>
+            <div><span class="prompt">$</span> <span class="cmd">cd agentix-code</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="dash-section">
+        <div class="dash-section-label">First run</div>
+        <div class="dash-card">
+          <div class="lifecycle-steps">
+            <div class="lifecycle-step">
+              <div class="lifecycle-num">1</div>
+              <div><strong>Open the portal</strong> → <strong>+ New</strong> → give it a name, the folder/repo path, and the stack.</div>
+            </div>
+            <div class="lifecycle-step">
+              <div class="lifecycle-num">2</div>
+              <div>Portal initializes agent workspace: <code>.agents/*.status</code>, <code>tasks/board.md</code>, <code>CLAUDE.md</code>, and <code>opencode.json</code> with six role agents.</div>
+            </div>
+            <div class="lifecycle-step">
+              <div class="lifecycle-num">3</div>
+              <div>On <strong>Run Agents</strong>, pick a role, write a prompt, choose a model, hit <strong>Run agent ▸</strong> — agent works inside the project with real tool use.</div>
+            </div>
+            <div class="lifecycle-step">
+              <div class="lifecycle-num">4</div>
+              <div>Watch it live: <strong>Agent Library</strong> (status per role), <strong>Run Agents</strong> (session transcript), <strong>AI Do</strong> (merged activity feed).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="dash-section">
+        <div class="dash-section-label">How the agentic system works</div>
+        <div class="dash-card">
+          <div class="about-text">
+            <p><strong>The contract:</strong> Registering a project writes a <code>CLAUDE.md</code> — the rules every spawned agent reads before doing anything. Read your assignment, read <code>docs/</code> and <code>tasks/board.md</code> first, commit with role prefix, append to <code>.agents/&lt;role&gt;.status</code> on every state change.</p>
+          </div>
+
           <div class="roles-table">
             <div class="roles-header">
-              <span>Role</span><span>Purpose</span><span>Own folder</span>
+              <span>Role</span><span>Purpose</span><span>Folder</span>
             </div>
             <div class="roles-row">
               <span class="role-name"><span class="agent-dot pm" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>PM</span>
-              <span>Orchestrates: reads every status file, assigns tasks</span>
+              <span>Orchestrates: reads every status file, assigns tasks, routes work</span>
               <code>.</code>
             </div>
             <div class="roles-row">
@@ -553,7 +870,7 @@
             </div>
             <div class="roles-row">
               <span class="role-name"><span class="agent-dot qa" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>QA</span>
-              <span>Writes test cases, runs them, reports bugs</span>
+              <span>Writes test cases, runs them, reports bugs, verifies fixes</span>
               <code>tests/</code>
             </div>
             <div class="roles-row">
@@ -567,45 +884,44 @@
               <code>infra/</code>
             </div>
           </div>
-        </div>
 
-        <!-- Run Lifecycle -->
-        <div class="dash-card full">
-          <div class="dash-card-header">
-            <h3><span>▹</span> The run lifecycle</h3>
+          <div class="note-box">
+            <strong>PM is the only coordinator.</strong> Agents never talk to each other directly. Cross-role handoffs go through <span class="inline-code">.agents/handoffs.json</span>. The one exception is <strong>Agent Meeting</strong> — an opt-in multi-agent discussion feature.
           </div>
+        </div>
+      </div>
+
+      <!-- Run Lifecycle -->
+      <div class="dash-section">
+        <div class="dash-section-label">The run lifecycle</div>
+        <div class="dash-card">
           <div class="lifecycle-steps">
             <div class="lifecycle-step">
               <div class="lifecycle-num">1</div>
-              <div>
-                <strong>Checkpoint before</strong> — working tree committed as-is, even if nothing changed.
-              </div>
+              <div><strong>Checkpoint before</strong> — working tree committed as-is, even if nothing changed. Always a point to revert to.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">2</div>
-              <div>
-                <strong>Agent runs</strong> — inside project folder via opencode, with real file-edit and shell tools.
-              </div>
+              <div><strong>Agent runs</strong> — inside project folder via opencode, with real file-edit and shell tools. Risky actions pause for approval.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">3</div>
-              <div>
-                <strong>Checkpoint after</strong> — another commit captures whatever changed.
-              </div>
+              <div><strong>Checkpoint after</strong> — another commit captures whatever changed, whether or not the agent made its own explicit commit.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">4</div>
-              <div>
-                <strong>Status + board update</strong> — agent appends to <code>.agents/&lt;role&gt;.status</code>; portal reconciles <code>tasks/board.md</code>.
-              </div>
+              <div><strong>Status + board update</strong> — agent appends to <code>.agents/&lt;role&gt;.status</code>; portal reconciles <code>tasks/board.md</code>.</div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Roles & Models -->
-        <div class="dash-card full">
-          <div class="dash-card-header">
-            <h3><span>◎</span> Default models (all free)</h3>
+      <!-- Default Models -->
+      <div class="dash-section">
+        <div class="dash-section-label">Default models</div>
+        <div class="dash-card">
+          <div class="about-text">
+            <p>All defaults are free <span class="inline-code">opencode/*</span> cloud models — no auth, no API key, no signup required. Edit <span class="inline-code">center/agents.json</span> to change.</p>
           </div>
           <div class="models-grid">
             <div class="model-item"><span class="role-name"><span class="agent-dot pm" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>PM</span><code>opencode/big-pickle</code></div>
@@ -615,10 +931,157 @@
             <div class="model-item"><span class="role-name"><span class="agent-dot dba" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>DBA</span><code>opencode/mimo-v2.5-free</code></div>
             <div class="model-item"><span class="role-name"><span class="agent-dot infra" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>INFRA</span><code>opencode/nemotron-3-ultra-free</code></div>
           </div>
-          <p class="api-key-note" style="margin-top:1rem;">No <code>opencode auth login</code>, no API key, no account signup required. Edit <code>center/agents.json</code> to change models. Add any model via <code>opencode models</code> — supports <code>ollama/</code>, <code>openrouter/</code>, etc.</p>
+          <p class="api-key-note" style="margin-top:1rem;">Add any model via <span class="inline-code">opencode models</span> — supports <span class="inline-code">ollama/</span>, <span class="inline-code">openrouter/</span>, etc. Old TUI tools (Codex / Claude / OpenHands) not needed.</p>
         </div>
-
       </div>
+
+      <!-- Beyond one-shot -->
+      <div class="dash-section">
+        <div class="dash-section-label">Beyond one-shot runs</div>
+        <div class="dash-card">
+          <div class="features-list">
+            <div class="features-category">
+              <h4>Chat Agents</h4>
+              <div class="features-items">
+                <div class="feature-item">Plan-only conversation with any role (or General / Internal Documents) that never touches files or the board.</div>
+              </div>
+            </div>
+            <div class="features-category">
+              <h4>Adaptive Loop</h4>
+              <div class="features-items">
+                <div class="feature-item"><strong>SIGNAL → SENSE → DECIDE → ACT → FEEDBACK → ADAPT</strong> background cycle.</div>
+                <div class="feature-item">Three modes: <span class="inline-code">observe</span> (detect + explain), <span class="inline-code">suggest</span> (propose, wait for approval), <span class="inline-code">auto</span> (safe decisions only).</div>
+              </div>
+            </div>
+            <div class="features-category">
+              <h4>Agent Meeting</h4>
+              <div class="features-items">
+                <div class="feature-item">Deliberate exception to "PM-only coordination" — spin up actual multi-role discussions, transcribed live.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Tour -->
+      <div class="dash-section">
+        <div class="dash-section-label">Feature tour</div>
+        <div class="dash-card">
+          <div class="features-list">
+            <div class="features-category">
+              <h4>Agents</h4>
+              <div class="features-items">
+                <div class="feature-item"><strong>Agent Library</strong> — every role's current status, plus Manage Skills (shared catalog, assignable to any role).</div>
+                <div class="feature-item"><strong>Chat Agents</strong> · <strong>Adaptive Loop</strong> · <strong>Observability</strong> (Langfuse) · <strong>Audit Log</strong> · <strong>AI Brain</strong> (Neo4j knowledge graph).</div>
+              </div>
+            </div>
+            <div class="features-category">
+              <h4>Project</h4>
+              <div class="features-items">
+                <div class="feature-item"><strong>Run Agents</strong> · <strong>Agent Meeting</strong> · <strong>Prompt Log</strong> · <strong>Handoffs</strong> · <strong>Versions</strong> (side-by-side diff, revert) · <strong>Files</strong> · <strong>Data Copilot</strong>.</div>
+              </div>
+            </div>
+            <div class="features-category">
+              <h4>Tools</h4>
+              <div class="features-items">
+                <div class="feature-item"><strong>Storage</strong> · <strong>Live Browser</strong> · <strong>Sketch</strong> (Excalidraw) · <strong>Artifacts</strong> (React/Tailwind → single HTML) · <strong>Documents</strong> (.docx) · <strong>Excel / Calc</strong>.</div>
+                <div class="feature-item"><strong>Visual Builder</strong> · <strong>Test Workflows</strong> (record + replay) · <strong>API Client</strong> (Bruno-style, .bru files, route sync from code).</div>
+              </div>
+            </div>
+            <div class="features-category">
+              <h4>Project Management</h4>
+              <div class="features-items">
+                <div class="feature-item"><strong>PMO Overview</strong> — phases, activities, planned-vs-actual, risks.</div>
+                <div class="feature-item"><strong>Minute Meeting</strong> — meeting register, decisions, action tracking.</div>
+              </div>
+            </div>
+            <div class="features-category">
+              <h4>Task Management</h4>
+              <div class="features-items">
+                <div class="feature-item"><strong>AI Do</strong> — AI board + unified Agent Activity feed (Run Agents, Artifacts, Documents, Excel merged).</div>
+                <div class="feature-item"><strong>To Do</strong> — tasks you manage yourself; agents never touch this list.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Protocol -->
+      <div class="dash-section">
+        <div class="dash-section-label">Protocol</div>
+        <div class="dash-card">
+          <div class="features-list">
+            <div class="features-items">
+              <div class="feature-item">Agents talk only through <span class="inline-code">.agents/*.status</span> files: <span class="inline-code">TIMESTAMP | STATE | MESSAGE</span></div>
+              <div class="feature-item">States: <span class="inline-code">INIT PENDING ASSIGNED IN_PROGRESS DONE FIXED BLOCKED REVIEW CANCELLED</span></div>
+              <div class="feature-item">Commits use role prefixes: <span class="inline-code">[PM] [BA] [DEV] [QA] [DBA] [INFRA]</span></div>
+              <div class="feature-item">PM is the only coordinator; no direct agent-to-agent chat</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API -->
+      <div class="dash-section">
+        <div class="dash-section-label">API</div>
+        <div class="dash-card">
+          <div class="about-text">
+            <p>FastAPI auto-generates interactive docs at <span class="inline-code">/docs</span> (Swagger UI) and raw spec at <span class="inline-code">/openapi.json</span> when the portal is running.</p>
+          </div>
+          <div style="overflow-x:auto;margin-top:1rem;">
+            <table class="api-table">
+              <thead>
+                <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects</code></td><td>List projects</td></tr>
+                <tr><td><span class="method post">POST</span></td><td><code>/api/projects</code></td><td>Register project + init .agents/</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}</code></td><td>Detail: statuses, board, handoffs, runs</td></tr>
+                <tr><td><span class="method post">POST</span></td><td><code>/api/projects/{id}/runs</code></td><td>Spawn agent {role, prompt, model?}</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/runs/{rid}/log</code></td><td>Tail a run's log</td></tr>
+                <tr><td><span class="method post">POST</span></td><td><code>/api/projects/{id}/status/{role}</code></td><td>Append manual status line</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/versions/grouped</code></td><td>Versions: local|git|status|documents|others</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/api-client/*</code></td><td>API Client collections/environments</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- File structure -->
+      <div class="dash-section">
+        <div class="dash-section-label">File structure</div>
+        <div class="dash-card">
+          <div class="cmd-box" style="font-size:0.78rem;line-height:1.7;">
+            <span class="dir">center/</span>
+            <div>├── <span class="cmd">agents.json</span>         <span class="comment"># role → model + descriptions (edit me)</span></div>
+            <div>├── <span class="cmd">run.sh</span>               <span class="comment"># venv + uvicorn → http://127.0.0.1:9999</span></div>
+            <div>├── <span class="cmd">requirements.txt</span>     <span class="comment"># fastapi, uvicorn, httpx, playwright, langfuse, neo4j...</span></div>
+            <div>├── <span class="dir">data/</span>                <span class="comment"># projects.json, run logs, per-feature state</span></div>
+            <div>├── <span class="dir">app/</span></div>
+            <div>│   ├── <span class="cmd">main.py</span>           <span class="comment"># every FastAPI route</span></div>
+            <div>│   ├── <span class="cmd">core.py</span>           <span class="comment"># registry, CLAUDE.md template, roles, spawn_run</span></div>
+            <div>│   ├── <span class="cmd">versioning.py</span>     <span class="comment"># git checkpoint/revert/diff</span></div>
+            <div>│   ├── <span class="cmd">adaptive_loop.py</span>  <span class="comment"># SIGNAL→SENSE→DECIDE→ACT→FEEDBACK→ADAPT</span></div>
+            <div>│   ├── <span class="cmd">agent_meeting.py</span>  <span class="comment"># multi-agent discussion</span></div>
+            <div>│   └── <span class="cmd">...</span>               <span class="comment"># browser, brain, observability, model_bandit</span></div>
+            <div>└── <span class="dir">static/</span></div>
+            <div>    ├── <span class="cmd">index.html</span>      <span class="comment"># shell, theming, EN/MS translations</span></div>
+            <div>    └── <span class="cmd">app.js</span>          <span class="comment"># most tabs' logic</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Observability -->
+      <div class="dash-section">
+        <div class="dash-section-label">Observability (optional)</div>
+        <div class="dash-card">
+          <div class="about-text">
+            <p>Traces agent runs, LLM calls, and DB queries to <a href="https://langfuse.com" target="_blank">Langfuse</a> — self-hosted or Cloud. Connect via the Observability tab or <span class="inline-code">.env</span> variables (<span class="inline-code">LANGFUSE_HOST</span>, <span class="inline-code">LANGFUSE_PUBLIC_KEY</span>, <span class="inline-code">LANGFUSE_SECRET_KEY</span>). Leave unset to disable.</p>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -628,6 +1091,7 @@
     let currentUser = null;
     let keyVisible = false;
 
+    // Toast
     function toast(msg) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -635,6 +1099,7 @@
       setTimeout(() => t.classList.remove('show'), 2000);
     }
 
+    // Copy cmd
     function copyCmd(btn) {
       const box = btn.closest('.cmd-box');
       const text = box.textContent.replace('Copy', '').trim();
@@ -642,6 +1107,17 @@
       toast('Copied');
     }
 
+    // Install tabs
+    document.querySelectorAll('.install-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Auth
     function getUsers() {
       return JSON.parse(localStorage.getItem('agentix_users') || '[]');
     }
@@ -656,17 +1132,10 @@
 
     function loadUser() {
       const sessionId = localStorage.getItem('agentix_session');
-      if (!sessionId) {
-        window.location.href = 'login.html';
-        return;
-      }
+      if (!sessionId) { window.location.href = 'login.html'; return; }
       const users = getUsers();
       const user = users.find(u => u.id === sessionId);
-      if (!user) {
-        localStorage.removeItem('agentix_session');
-        window.location.href = 'login.html';
-        return;
-      }
+      if (!user) { localStorage.removeItem('agentix_session'); window.location.href = 'login.html'; return; }
       currentUser = user;
       render();
     }
@@ -679,7 +1148,7 @@
       document.getElementById('api-key-text').textContent = currentUser.apiKey;
     }
 
-    // Toggle key visibility
+    // Toggle key
     document.getElementById('btn-toggle-key').addEventListener('click', () => {
       const el = document.getElementById('api-key-text');
       const btn = document.getElementById('btn-toggle-key');
@@ -704,15 +1173,12 @@
     // Regenerate key
     document.getElementById('btn-regen').addEventListener('click', () => {
       if (!confirm('Generate a new API key? The old one will stop working.')) return;
-
       const users = getUsers();
       const idx = users.findIndex(u => u.id === currentUser.id);
       if (idx === -1) return;
-
       users[idx].apiKey = generateApiKey();
       saveUsers(users);
       currentUser = users[idx];
-
       render();
       keyVisible = false;
       document.getElementById('api-key-text').textContent = '••••••••••••••••••••••••';
@@ -727,7 +1193,7 @@
       window.location.href = 'login.html';
     });
 
-    // Toggle dropdown
+    // Dropdown
     document.getElementById('user-menu').addEventListener('click', (e) => {
       e.stopPropagation();
       document.getElementById('user-dropdown').classList.toggle('show');
