@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENTIX — Validate API Key</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%236366f1'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='monospace' font-weight='bold'>A</text></svg>">
+  <style>
+    body { background: var(--bg-primary); }
+    .validate-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .validate-card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .validate-card h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+    .validate-card .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+    .validate-input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .validate-input-group input {
+      flex: 1;
+    }
+    .validate-btn {
+      padding: 12px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .validate-btn:hover {
+      background: var(--accent-light);
+    }
+    .validate-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .result-box {
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      display: none;
+    }
+    .result-box.valid {
+      display: block;
+      background: var(--green-glow);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: var(--green);
+    }
+    .result-box.invalid {
+      display: block;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+    .result-box pre {
+      margin: 0.5rem 0 0;
+      padding: 0.75rem;
+      background: rgba(0,0,0,0.2);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-primary);
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .back-link a {
+      color: var(--accent-light);
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">A</div>
+      AGENTIX
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <div class="validate-page">
+    <div class="validate-card">
+      <h1>Validate API Key</h1>
+      <p class="subtitle">Enter an API key to check if it's valid.</p>
+
+      <form id="validate-form">
+        <div class="validate-input-group">
+          <input type="text" id="api-key-input" placeholder="ak_..." autocomplete="off" spellcheck="false">
+          <button type="submit" class="validate-btn" id="validate-btn">Check</button>
+        </div>
+      </form>
+
+      <div class="result-box" id="result-box"></div>
+
+      <div class="back-link">
+        <a href="dashboard.html">← Back to dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('agentix_users') || '[]');
+    }
+
+    function validateKey(apiKey) {
+      const users = getUsers();
+      const user = users.find(u => u.apiKey === apiKey);
+      if (!user) return { valid: false, error: 'Invalid API key' };
+      return {
+        valid: true,
+        user: { id: user.id, name: user.name, email: user.email },
+        createdAt: user.createdAt,
+      };
+    }
+
+    const form = document.getElementById('validate-form');
+    const input = document.getElementById('api-key-input');
+    const btn = document.getElementById('validate-btn');
+    const resultBox = document.getElementById('result-box');
+
+    // Also support ?api_key= query param
+    const params = new URLSearchParams(location.search);
+    const presetKey = params.get('api_key');
+    if (presetKey) {
+      input.value = presetKey;
+      doValidate(presetKey);
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const key = input.value.trim();
+      if (!key) return;
+      doValidate(key);
+    });
+
+    function doValidate(key) {
+      btn.disabled = true;
+      btn.textContent = 'Checking...';
+      resultBox.className = 'result-box';
+      resultBox.style.display = 'none';
+
+      setTimeout(() => {
+        const result = validateKey(key);
+
+        if (result.valid) {
+          resultBox.className = 'result-box valid';
+          resultBox.innerHTML = `<strong>✓ Valid API key</strong><pre>${JSON.stringify(result, null, 2)}</pre>`;
+        } else {
+          resultBox.className = 'result-box invalid';
+          resultBox.innerHTML = `<strong>✗ ${result.error}</strong>`;
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'Check';
+      }, 200);
+    }
+  </script>
+
+</body>
+</html>

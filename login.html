@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENTIX — Sign In</title>
+  <meta name="description" content="Sign in to your AGENTIX control panel.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%236366f1'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='monospace' font-weight='bold'>A</text></svg>">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-mark">A</div>
+      AGENTIX
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#agents">Agents</a>
+    </div>
+  </nav>
+
+  <div class="login-page" style="padding-top: 64px;">
+    <div class="login-left">
+      <div class="login-features">
+        <div class="section-label">AGENTIX</div>
+        <h2>Your software team, coordinated through your terminal</h2>
+
+        <div class="login-feature-item">
+          <div class="login-feature-icon">⬡</div>
+          <div>
+            <h4>6 Role-Based Agents</h4>
+            <p>PM, BA, DEV, QA, DBA, and INFRA working in concert through plain text artifacts.</p>
+          </div>
+        </div>
+
+        <div class="login-feature-item">
+          <div class="login-feature-icon">◎</div>
+          <div>
+            <h4>Risk-Aware Automation</h4>
+            <p>Pattern-based gates that catch dangerous operations before they run.</p>
+          </div>
+        </div>
+
+        <div class="login-feature-item">
+          <div class="login-feature-icon">◈</div>
+          <div>
+            <h4>AI Knowledge Graph</h4>
+            <p>Every decision, every run — logged, connected, and queryable.</p>
+          </div>
+        </div>
+
+        <div class="login-feature-item">
+          <div class="login-feature-icon">◉</div>
+          <div>
+            <h4>Model Bandit</h4>
+            <p>Auto-picks the best model per role based on real outcomes, not defaults.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="login-container">
+        <h1>Welcome back</h1>
+        <p class="subtitle">Sign in to your AGENTIX control panel</p>
+
+        <div class="login-tabs">
+          <button class="login-tab active" data-tab="login">Sign In</button>
+          <button class="login-tab" data-tab="register">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password">
+          </div>
+
+          <div class="form-options">
+            <label>
+              <input type="checkbox" style="accent-color: var(--accent);">
+              Remember me
+            </label>
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="login-btn">Sign In</button>
+
+          <div class="login-divider">or continue with</div>
+
+          <button type="button" class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" style="display: none;">
+          <div class="form-group">
+            <label for="reg-name">Full Name</label>
+            <input type="text" id="reg-name" placeholder="Your name" autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" placeholder="Create a password" autocomplete="new-password">
+          </div>
+
+          <div class="form-group">
+            <label for="reg-confirm">Confirm Password</label>
+            <input type="password" id="reg-confirm" placeholder="Confirm your password" autocomplete="new-password">
+          </div>
+
+          <button type="submit" class="login-btn">Create Account</button>
+
+          <div class="login-divider">or continue with</div>
+
+          <button type="button" class="social-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            Sign up with GitHub
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <span id="login-footer-text">Don't have an account? <a href="#" id="switch-to-register">Create one</a></span>
+          <span id="register-footer-text" style="display:none;">Already have an account? <a href="#" id="switch-to-login">Sign in</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .error-msg {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+  </style>
+
+  <script>
+    const tabs = document.querySelectorAll('.login-tab');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const loginFooter = document.getElementById('login-footer-text');
+    const registerFooter = document.getElementById('register-footer-text');
+    const switchToRegister = document.getElementById('switch-to-register');
+    const switchToLogin = document.getElementById('switch-to-login');
+
+    function showTab(tabName) {
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
+      clearErrors();
+      if (tabName === 'login') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        loginFooter.style.display = 'inline';
+        registerFooter.style.display = 'none';
+      } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        loginFooter.style.display = 'none';
+        registerFooter.style.display = 'inline';
+      }
+    }
+
+    function showError(form, msg) {
+      let el = form.querySelector('.error-msg');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'error-msg';
+        form.prepend(el);
+      }
+      el.textContent = msg;
+      el.classList.add('show');
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+    }
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('agentix_users') || '[]');
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem('agentix_users', JSON.stringify(users));
+    }
+
+    function generateApiKey() {
+      return 'ak_' + Array.from(crypto.getRandomValues(new Uint8Array(24))).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function generateId() {
+      return Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function hashPassword(password) {
+      let hash = 0;
+      for (let i = 0; i < password.length; i++) {
+        const chr = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0;
+      }
+      return 'simple:' + Math.abs(hash).toString(36) + ':' + password.length;
+    }
+
+    function verifyPassword(password, stored) {
+      return stored === hashPassword(password);
+    }
+
+    // Check if already logged in
+    const currentUser = localStorage.getItem('agentix_session');
+    if (currentUser) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // Login
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearErrors();
+      const btn = loginForm.querySelector('.login-btn');
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      setTimeout(() => {
+        const users = getUsers();
+        const user = users.find(u => u.email === email.toLowerCase());
+
+        if (!user || !verifyPassword(password, user.password)) {
+          showError(loginForm, 'Invalid email or password');
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+          return;
+        }
+
+        localStorage.setItem('agentix_session', user.id);
+        window.location.href = 'dashboard.html';
+      }, 300);
+    });
+
+    // Register
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearErrors();
+      const btn = registerForm.querySelector('.login-btn');
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const confirm = document.getElementById('reg-confirm').value;
+
+      if (password !== confirm) {
+        showError(registerForm, 'Passwords do not match');
+        return;
+      }
+
+      if (password.length < 6) {
+        showError(registerForm, 'Password must be at least 6 characters');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Creating account...';
+
+      setTimeout(() => {
+        const users = getUsers();
+
+        if (users.find(u => u.email === email.toLowerCase())) {
+          showError(registerForm, 'Email already registered');
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+          return;
+        }
+
+        const user = {
+          id: generateId(),
+          name,
+          email: email.toLowerCase(),
+          password: hashPassword(password),
+          apiKey: generateApiKey(),
+          createdAt: new Date().toISOString(),
+        };
+
+        users.push(user);
+        saveUsers(users);
+        localStorage.setItem('agentix_session', user.id);
+        window.location.href = 'dashboard.html';
+      }, 300);
+    });
+
+    tabs.forEach(tab => tab.addEventListener('click', () => showTab(tab.dataset.tab)));
+    switchToRegister.addEventListener('click', (e) => { e.preventDefault(); showTab('register'); });
+    switchToLogin.addEventListener('click', (e) => { e.preventDefault(); showTab('login'); });
+  </script>
+
+</body>
+</html>

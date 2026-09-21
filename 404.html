@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENTIX — Not Found</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .not-found {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .not-found h1 {
+      font-size: 6rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text-muted);
+      line-height: 1;
+    }
+    .not-found p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin: 1rem 0 2rem;
+    }
+  </style>
+  <script>
+    // GitHub Pages SPA redirect: strip hash/query and redirect to index
+    sessionStorage.setItem('agentix_redirect', location.pathname);
+    location.replace('index.html');
+  </script>
+</head>
+<body>
+  <div class="not-found">
+    <div>
+      <h1>404</h1>
+      <p>Page not found. Redirecting...</p>
+      <a href="index.html" class="btn-primary" style="display:inline-block;">Go Home</a>
+    </div>
+  </div>
+</body>
+</html>

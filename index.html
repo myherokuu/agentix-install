@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENTIX — Your Software Team, Automated</title>
+  <meta name="description" content="A local control panel that turns opencode CLI into a coordinated team of six role-based agents.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%236366f1'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='monospace' font-weight='bold'>A</text></svg>">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <div class="logo-mark">A</div>
+      AGENTIX
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#agents">Agents</a>
+      <a href="#how">How it works</a>
+      <a href="login.html" class="nav-cta">Get Started</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Local-first. Self-hosted. Your data stays yours.
+    </div>
+
+    <h1>Your software team, running from your terminal</h1>
+
+    <p>AGENTIX turns opencode CLI into six coordinated agents — PM, BA, DEV, QA, DBA, INFRA — working through human-readable artifacts instead of opaque black boxes.</p>
+
+    <div class="hero-actions">
+      <a href="login.html" class="btn-primary">Start Building</a>
+      <a href="#features" class="btn-secondary">See how it works</a>
+    </div>
+
+    <div class="hero-terminal">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot"></div>
+          <div class="terminal-dot"></div>
+          <div class="terminal-dot"></div>
+          <span class="terminal-title">agentix — ~/my-project</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="prompt">$</span> <span class="cmd">agentix start</span></div>
+          <div class="output">Initializing 6 agents...</div>
+          <div><span class="role">[PM]</span> <span class="output">Created task: "Implement user auth"</span></div>
+          <div><span class="role">[BA]</span> <span class="output">Analyzing requirements → spec.md</span></div>
+          <div><span class="role">[DEV]</span> <span class="output">Building → src/auth/</span></div>
+          <div><span class="role">[QA]</span> <span class="output">Writing tests → tests/auth.test.ts</span></div>
+          <div class="success">✓ All agents coordinated through tasks/board.md</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="section-label">Why AGENTIX</div>
+    <h2 class="section-title">Not another chatbot. A real system.</h2>
+    <p class="section-desc">Every decision is a text file you can open in any editor. Every agent is a role, not a prompt hack. Every run is monitored and traceable.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon purple">⬡</div>
+        <h3>Coordinated, not chaotic</h3>
+        <p>Six role-based agents — PM, BA, DEV, QA, DBA, INFRA — working through a shared task board. Agents never talk to each other directly. PM coordinates through plain text artifacts.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon green">◎</div>
+        <h3>Risk-aware automation</h3>
+        <p>A pattern-based classifier that denies dangerous operations to unattended runs and forces human approval when autonomy is enabled. Real gates, not theoretical frameworks.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon amber">◈</div>
+        <h3>AI Brain</h3>
+        <p>An observation layer that watches every run, chat, and document — logs structured events, syncs into a Neo4j knowledge graph, and answers questions grounded in your project's memory.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon cyan">◉</div>
+        <h3>Model Bandit</h3>
+        <p>Thompson-sampling auto-pick of the best-performing model per role, based on real run outcomes. Not a fixed default — the system learns what works best for each job.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon red">◇</div>
+        <h3>Single source of truth</h3>
+        <p>Task board, live run monitoring, risk gate, memory, skill catalog — all reads from and writes to the same project state. The backend decides when views could disagree.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon purple">▹</div>
+        <h3>Fully local</h3>
+        <p>Self-hosted on your machine. No cloud dependency. Your code, your artifacts, your knowledge graph — everything stays where you put it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section agents-section" id="agents">
+    <div class="section-label">The Team</div>
+    <h2 class="section-title">Six roles. One purpose.</h2>
+    <p class="section-desc" style="margin-left:auto;margin-right:auto;">Each agent has a defined responsibility. No overlap, no ambiguity.</p>
+
+    <div class="agents-row">
+      <div class="agent-chip">
+        <div class="agent-dot pm"></div>
+        PM — Product Manager
+      </div>
+      <div class="agent-chip">
+        <div class="agent-dot ba"></div>
+        BA — Business Analyst
+      </div>
+      <div class="agent-chip">
+        <div class="agent-dot dev"></div>
+        DEV — Developer
+      </div>
+      <div class="agent-chip">
+        <div class="agent-dot qa"></div>
+        QA — Quality Assurance
+      </div>
+      <div class="agent-chip">
+        <div class="agent-dot dba"></div>
+        DBA — Database Admin
+      </div>
+      <div class="agent-chip">
+        <div class="agent-dot infra"></div>
+        INFRA — Infrastructure
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">Three steps to a coordinated build</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Define the work</h3>
+        <p>Tell PM what you want built. PM breaks it into tasks and assigns to the right agents through the task board.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Agents execute</h3>
+        <p>Each agent works independently on their assigned tasks, writing to status files and artifacts. Nothing is hidden — every decision is a readable text file.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Coordinate and ship</h3>
+        <p>PM monitors progress, handles escalations, and ensures everything converges. Risk gates catch dangerous actions before they execute.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="limitation-section">
+    <div class="limitation-card">
+      <h3>Built by one person, for one person</h3>
+      <p>AGENTIX grew fast around real usage, not a spec. It's honest about what it is: a personal tool that runs on opencode, with rough edges that show it was built to be useful before it was built to be polished. That's not a weakness — it's what fast-moving tools look like before they're hardened for everyone.</p>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to build with your team?</h2>
+    <p>Run one command. Get six agents. Ship faster.</p>
+    <div class="cta-actions">
+      <a href="login.html" class="btn-primary">Get Started Free</a>
+      <a href="#features" class="btn-secondary">Learn More</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-left">AGENTIX — Built with opencode</div>
+    <div class="footer-right">
+      <a href="#">GitHub</a>
+      <a href="#">Docs</a>
+      <a href="#">Changelog</a>
+    </div>
+  </footer>
+
+</body>
+</html>
