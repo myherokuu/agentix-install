@@ -248,6 +248,10 @@
         ? (server.ok ? { valid: true, ...server.data } : { valid: false, error: server.data.error || 'Invalid API key' })
         : validateKeyLocal(key);
 
+      // Clear the inline display:none set above — otherwise it overrides
+      // the .valid/.invalid CSS class and the result box never appears.
+      resultBox.style.display = '';
+
       if (result.valid) {
         resultBox.className = 'result-box valid';
         resultBox.innerHTML = `<strong>✓ Valid API key</strong><pre>${JSON.stringify(result, null, 2)}</pre>`;
