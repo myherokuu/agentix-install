@@ -230,7 +230,19 @@
     // backend is reachable (e.g. this page served statically with no
     // server.js running behind it) so callers can fall back to the
     // local-only (localStorage) demo mode instead of hanging or erroring.
+    //
+    // Once we learn there's no backend, remember it for the rest of this
+    // browser tab (sessionStorage) so we stop firing (and console-logging)
+    // doomed /api requests on every page load.
+    function noBackendKnown() {
+      return sessionStorage.getItem('agentix_no_backend') === '1';
+    }
+    function markNoBackend() {
+      sessionStorage.setItem('agentix_no_backend', '1');
+    }
+
     async function apiPost(path, body) {
+      if (noBackendKnown()) return null;
       try {
         const res = await fetch(path, {
           method: 'POST',
@@ -242,22 +254,25 @@
         // with an HTML/plain error page for an unknown route or method —
         // never application/json. Treat anything else as "no backend".
         const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) return null;
+        if (!ct.includes('application/json')) { markNoBackend(); return null; }
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
+        markNoBackend();
         return null;
       }
     }
 
     async function apiGet(path) {
+      if (noBackendKnown()) return null;
       try {
         const res = await fetch(path, { credentials: 'include' });
         const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) return null;
+        if (!ct.includes('application/json')) { markNoBackend(); return null; }
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
+        markNoBackend();
         return null;
       }
     }

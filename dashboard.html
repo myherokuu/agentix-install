@@ -711,10 +711,10 @@
               <div class="install-step">
                 <div class="install-step-num">2</div>
                 <div class="install-step-content">
-                  <strong>Install Docker</strong> if you don't have it:<br>
-                  <span class="inline-code">macOS</span> — <span class="inline-code">brew install --cask docker</span> (open Docker Desktop once)<br>
-                  <span class="inline-code">Linux</span> — <span class="inline-code">sudo apt-get install docker.io docker-compose-plugin</span><br>
-                  <span class="inline-code">Windows</span> — <a href="https://docs.docker.com/get-docker/" target="_blank" style="color:var(--accent-light);">Docker Desktop</a> (needs WSL2)
+                  <strong>Install Docker</strong> — the one thing this path can't install for you:<br>
+                  <span class="inline-code">macOS</span> — <span class="inline-code">brew install --cask docker</span> (open Docker Desktop once so its daemon is running)<br>
+                  <span class="inline-code">Linux</span> — <span class="inline-code">sudo apt-get install docker.io docker-compose-plugin</span> (Debian/Ubuntu — use your distro's package manager otherwise)<br>
+                  <span class="inline-code">Windows</span> — <a href="https://docs.docker.com/get-docker/" target="_blank" style="color:var(--accent-light);">Docker Desktop</a> (needs WSL2, which its installer sets up). Run the manual <span class="inline-code">docker compose</span> command below from PowerShell — <span class="inline-code">bootstrap/run-myagents.sh</span> is a bash script, so it only runs as-is inside WSL, Git Bash, or macOS/Linux.
                 </div>
               </div>
               <div class="install-step">
@@ -723,32 +723,32 @@
                   <strong>Run bootstrap script</strong> (checks Docker, sets up .env, starts everything):
                   <div class="cmd-box" style="margin-top:8px;">
                     <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
-                    <div><span class="prompt">$</span> <span class="cmd">./bootstrap/run-myagents.sh</span></div>
+                    <div><span class="prompt">$</span> <span class="cmd">./bootstrap/run-myagents.sh</span>    <span class="comment"># from the repo root</span></div>
                   </div>
                 </div>
               </div>
               <div class="install-step">
                 <div class="install-step-num">4</div>
                 <div class="install-step-content">
-                  <strong>Or manually with Docker Compose</strong>:
+                  <strong>Or manually with Docker Compose</strong> (works on any OS with Docker installed, including Windows PowerShell):
                   <div class="cmd-box" style="margin-top:8px;">
                     <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
-                    <div><span class="prompt">$</span> <span class="cmd">cp .env.example .env</span>   <span class="comment"># edit PROJECTS_DIR</span></div>
+                    <div><span class="prompt">$</span> <span class="cmd">cp .env.example .env</span>   <span class="comment"># edit PROJECTS_DIR to wherever your real project folders live</span></div>
                     <div><span class="prompt">$</span> <span class="cmd">docker compose -f docker/compose.yml up --build</span></div>
                   </div>
-                  <p class="api-key-note" style="margin-top:8px;">Register projects using paths under <span class="inline-code">/workspace/projects/...</span> (where PROJECTS_DIR is mounted). Runtime state lives in the <span class="inline-code">myagents-data</span> Docker volume.</p>
+                  <p class="api-key-note" style="margin-top:8px;">Everything (portal, opencode CLI, Playwright Chromium, LibreOffice, Node) runs inside the container — see <span class="inline-code">docker/Dockerfile</span> and <span class="inline-code">docker/compose.yml</span>. Register projects using paths under <span class="inline-code">/workspace/projects/...</span> (where PROJECTS_DIR gets mounted inside the container), not their original host path. Runtime state (projects.json, runs, chats, PMO...) lives in the <span class="inline-code">myagents-data</span> Docker volume, never in the image.</p>
                 </div>
               </div>
             </div>
 
             <div class="note-box">
-              <strong>Docker auto-restart:</strong> <span class="inline-code">docker/compose.yml</span> sets <span class="inline-code">restart: unless-stopped</span> — Docker restarts the container on crash, on any OS.
+              <strong>Auto-restart:</strong> already on, no setup needed. <span class="inline-code">docker/compose.yml</span> sets <span class="inline-code">restart: unless-stopped</span> — Docker restarts the container on a crash, on any host OS.
             </div>
           </div>
 
           <div class="install-panel" id="panel-native">
             <div class="about-text">
-              <p>Runs directly on your machine. <span class="inline-code">./run.sh</span> installs Python deps, Playwright Chromium, and <span class="inline-code">opencode</span> automatically if missing.</p>
+              <p>Runs directly on your machine. <span class="inline-code">./run.sh</span> installs the Python deps and the Playwright Chromium browser itself, and installs <span class="inline-code">opencode</span> automatically if it's missing — it's what every Run Agents / Chat Agents call actually shells out to, so without it, runs fail with a bare "FileNotFoundError" that's hard to root-cause from the UI. If you'd rather not think about any of this, use the Docker path instead — it bundles all four dependencies below.</p>
             </div>
 
             <div class="install-steps" style="margin-top:1.25rem;">
@@ -777,26 +777,26 @@
               <div class="install-step">
                 <div class="install-step-num">3</div>
                 <div class="install-step-content">
-                  <strong>Optional deps</strong> (warned but not auto-installed):<br>
-                  <span class="inline-code">LibreOffice</span> — for .docx/Calc export. <span class="inline-code">brew install --cask libreoffice</span> or <span class="inline-code">sudo apt install libreoffice</span><br>
-                  <span class="inline-code">Node.js</span> — for artifacts-builder skill. <span class="inline-code">brew install node</span> or nodesource/nvm
+                  <strong>Optional deps</strong> (warned but not auto-installed — the right install command depends on your OS/package manager):<br>
+                  <span class="inline-code">LibreOffice</span> (<span class="inline-code">soffice</span>) — for Documents <span class="inline-code">.docx</span> export and Calc export. <span class="inline-code">brew install --cask libreoffice</span> (macOS) or <span class="inline-code">sudo apt install libreoffice</span> (Linux)<br>
+                  <span class="inline-code">Node.js</span> — for the artifacts-builder skill. <span class="inline-code">brew install node</span> (macOS) or nodesource/nvm (Linux)
                 </div>
               </div>
               <div class="install-step">
                 <div class="install-step-num">4</div>
                 <div class="install-step-content">
-                  <strong>Optional: auto-restart on crash</strong> (macOS only):
+                  <strong>Optional: auto-restart on crash</strong> (macOS only — see note below for other OSes):
                   <div class="cmd-box" style="margin-top:8px;">
                     <button class="cmd-copy-btn" onclick="copyCmd(this)">Copy</button>
                     <div><span class="prompt">$</span> <span class="cmd">./supervisor_install.sh</span></div>
                   </div>
-                  <p class="api-key-note" style="margin-top:8px;">Installs a <span class="inline-code">launchd</span> user agent with KeepAlive. Logs at <span class="inline-code">data/logs/portal.{out,err}.log</span>.</p>
+                  <p class="api-key-note" style="margin-top:8px;">By default <span class="inline-code">./restart.sh</span> starts uvicorn as a plain background process — if it crashes, nothing brings it back until you notice. This installs a <span class="inline-code">launchd</span> user agent (<span class="inline-code">~/Library/LaunchAgents/com.myagents.center.plist</span>) with <span class="inline-code">KeepAlive</span> (restarts on crash/non-zero exit, but not after an intentional <span class="inline-code">./stop.sh</span>) and <span class="inline-code">RunAtLoad</span> (starts on login). <span class="inline-code">./restart.sh</span> and <span class="inline-code">./stop.sh</span> detect the installed job automatically and use <span class="inline-code">launchctl</span> instead of manual kill/nohup once it's there. Logs at <span class="inline-code">data/logs/portal.{out,err}.log</span>. Uninstall: <span class="inline-code">launchctl bootout gui/$(id -u)/com.myagents.center && rm ~/Library/LaunchAgents/com.myagents.center.plist</span>. <span class="inline-code">launchd</span> is macOS-only — if you're not on macOS and don't want Docker, auto-restart isn't currently available; <span class="inline-code">./restart.sh</span> still works, it just needs to be re-run by hand after a crash.</p>
                 </div>
               </div>
             </div>
 
             <div class="note-box">
-              <strong>Backups:</strong> <span class="inline-code">data/</span> is backed up every 6 hours to <span class="inline-code">center/backups/*.tar.gz</span> (last 14 kept). Trigger from the <strong>Services</strong> dropdown in the topbar.
+              <strong>Backups:</strong> <span class="inline-code">data/</span> (projects, chat history, Brain memory, Agent Meetings) is backed up automatically every 6 hours to <span class="inline-code">center/backups/*.tar.gz</span> (last 14 kept, oldest pruned) — runs as a background thread inside the portal itself, already on with no setup. Check the latest backup or trigger one on demand from the <strong>Services</strong> dropdown next to the online indicator in the topbar.
             </div>
           </div>
         </div>
@@ -823,19 +823,19 @@
           <div class="lifecycle-steps">
             <div class="lifecycle-step">
               <div class="lifecycle-num">1</div>
-              <div><strong>Open the portal</strong> → <strong>+ New</strong> → give it a name, the folder/repo path, and the stack.</div>
+              <div><strong>Open the portal</strong> → <strong>+ New</strong> → give it a name, the folder/repo path (create it first if it doesn't exist yet — <code>laravel new my-app</code>, <code>git init</code>, whatever fits the stack), and the stack.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">2</div>
-              <div>Portal initializes agent workspace: <code>.agents/*.status</code>, <code>tasks/board.md</code>, <code>CLAUDE.md</code>, and <code>opencode.json</code> with six role agents.</div>
+              <div>The portal initializes the agent workspace in that folder: <code>.agents/*.status</code>, <code>tasks/board.md</code>, <code>CLAUDE.md</code> (the rules every agent reads), and <code>opencode.json</code> defining six role agents (pm, ba, dev, qa, dba, infra). It also becomes a git repo if it isn't one already.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">3</div>
-              <div>On <strong>Run Agents</strong>, pick a role, write a prompt, choose a model, hit <strong>Run agent ▸</strong> — agent works inside the project with real tool use.</div>
+              <div>On <strong>Run Agents</strong>, pick a role, write a prompt, choose a model, hit <strong>Run agent ▸</strong> — the agent works inside the project folder with real tool use (file edits, shell, git) and updates its own <code>.agents/&lt;role&gt;.status</code> automatically.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">4</div>
-              <div>Watch it live: <strong>Agent Library</strong> (status per role), <strong>Run Agents</strong> (session transcript), <strong>AI Do</strong> (merged activity feed).</div>
+              <div>Watch it live: <strong>Agent Library</strong> (status per role), <strong>Run Agents</strong> (the session transcript + approval prompts), <strong>AI Do</strong> (every role's task board <em>and</em> every tool's activity, merged into one feed).</div>
             </div>
           </div>
         </div>
@@ -845,17 +845,31 @@
       <div class="dash-section">
         <div class="dash-section-label">How the agentic system works</div>
         <div class="dash-card">
+          <h4>The contract every project gets</h4>
           <div class="about-text">
-            <p><strong>The contract:</strong> Registering a project writes a <code>CLAUDE.md</code> — the rules every spawned agent reads before doing anything. Read your assignment, read <code>docs/</code> and <code>tasks/board.md</code> first, commit with role prefix, append to <code>.agents/&lt;role&gt;.status</code> on every state change.</p>
+            <p>Registering a project writes a <code>CLAUDE.md</code> into it — the same rules every spawned agent, whatever its role, reads before doing anything:</p>
           </div>
+          <div class="features-list">
+            <div class="features-items">
+              <div class="feature-item">Read your assignment (from the PM, or from the prompt you typed directly).</div>
+              <div class="feature-item">Read <span class="inline-code">docs/</span> and <span class="inline-code">tasks/board.md</span> first, then work only inside your own domain folder (<span class="inline-code">ba</span> → <span class="inline-code">docs/</span>, <span class="inline-code">dev</span> → <span class="inline-code">src/</span>, <span class="inline-code">qa</span> → <span class="inline-code">tests/</span>, <span class="inline-code">dba</span> → <span class="inline-code">db/</span>, <span class="inline-code">infra</span> → <span class="inline-code">infra/</span> — configurable per role in <span class="inline-code">agents.json</span>).</div>
+              <div class="feature-item">Commit with a role prefix: <span class="inline-code">[PM] [BA] [DEV] [QA] [DBA] [INFRA]</span>.</div>
+              <div class="feature-item">Append one line to <span class="inline-code">.agents/&lt;role&gt;.status</span> on every state change: <span class="inline-code">TIMESTAMP | STATE | MESSAGE</span>, states <span class="inline-code">INIT PENDING ASSIGNED IN_PROGRESS DONE FIXED BLOCKED REVIEW CANCELLED</span>. Never overwrite — it's an append-only log, so history is always there to read back.</div>
+              <div class="feature-item">Never set <span class="inline-code">DONE</span> without a matching commit, and never commit secrets or <span class="inline-code">.env</span> files.</div>
+              <div class="feature-item">Keep <span class="inline-code">tasks/board.md</span> current — move a task to <em>In Progress</em> when starting it, <em>Done</em>/<em>Blocked</em> when finishing; add a <span class="inline-code">- [ ] T-XXX:</span> row for any new work discovered along the way.</div>
+              <div class="feature-item"><strong>PM is the only coordinator — agents never talk to each other directly.</strong> Cross-role handoffs go through <span class="inline-code">.agents/handoffs.json</span>, which the PM writes and the next role reads; there's no agent-to-agent chat channel. (The one deliberate exception is <strong>Agent Meeting</strong>, a separate, opt-in multi-agent discussion feature for when you <em>want</em> several roles to actually converse.)</div>
+            </div>
+          </div>
+          <p class="api-key-note" style="margin-top:1rem;">This is the whole protocol. No custom message format, no queue to run, nothing to learn beyond "these are plain text files, read them."</p>
 
+          <h4 style="margin-top:1.75rem;">Roles</h4>
           <div class="roles-table">
             <div class="roles-header">
               <span>Role</span><span>Purpose</span><span>Folder</span>
             </div>
             <div class="roles-row">
               <span class="role-name"><span class="agent-dot pm" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>PM</span>
-              <span>Orchestrates: reads every status file, assigns tasks, routes work</span>
+              <span>Orchestrates: reads every status file, assigns tasks, routes work, keeps the board honest</span>
               <code>.</code>
             </div>
             <div class="roles-row">
@@ -884,9 +898,10 @@
               <code>infra/</code>
             </div>
           </div>
+          <p class="api-key-note" style="margin-top:0.75rem;">Plus two chat-only pseudo-roles that never touch <span class="inline-code">.agents/</span> or the board: <strong>General</strong> (broad-knowledge assistant, not tied to any project role) and <strong>Internal Documents</strong> (answers grounded only in that project's own Documents tab + readable Storage uploads, says plainly when something isn't in there rather than guessing). Every role/model pairing lives in <span class="inline-code">center/agents.json</span> — edit it directly to change names, working folders, descriptions, or which model each role uses.</p>
 
           <div class="note-box">
-            <strong>PM is the only coordinator.</strong> Agents never talk to each other directly. Cross-role handoffs go through <span class="inline-code">.agents/handoffs.json</span>. The one exception is <strong>Agent Meeting</strong> — an opt-in multi-agent discussion feature.
+            <strong>Coordination model.</strong> There is no agent-to-agent message bus by design. The PM is the single point that reads every <span class="inline-code">.agents/*.status</span> file and <span class="inline-code">tasks/board.md</span>, decides what's next, and writes <span class="inline-code">.agents/handoffs.json</span> when a task moves from one role to another. This keeps the whole system debuggable — at any point, "why did DEV do that?" has a plain-text answer sitting in a file, not a conversation buried in an LLM's context window somewhere.
           </div>
         </div>
       </div>
@@ -895,33 +910,37 @@
       <div class="dash-section">
         <div class="dash-section-label">The run lifecycle</div>
         <div class="dash-card">
+          <div class="about-text">
+            <p>Every <strong>Run Agents</strong> click follows the same sequence, regardless of role:</p>
+          </div>
           <div class="lifecycle-steps">
             <div class="lifecycle-step">
               <div class="lifecycle-num">1</div>
-              <div><strong>Checkpoint before</strong> — working tree committed as-is, even if nothing changed. Always a point to revert to.</div>
+              <div><strong>Checkpoint before</strong> — the project's working tree is committed as-is (<code>[CHECKPOINT] before {role} run {id}</code>), even if nothing changed, so there's always a point to revert to.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">2</div>
-              <div><strong>Agent runs</strong> — inside project folder via opencode, with real file-edit and shell tools. Risky actions pause for approval.</div>
+              <div><strong>The agent runs</strong> inside the project folder via opencode, with real file-edit and shell tools. In <em>attended</em> mode (the default), risky actions pause for your approval in the Run Agents tab; <em>unattended</em> background sweeps auto-approve safe patterns only.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">3</div>
-              <div><strong>Checkpoint after</strong> — another commit captures whatever changed, whether or not the agent made its own explicit commit.</div>
+              <div><strong>Checkpoint after</strong> — another commit (<code>[AUTO] snapshot after {role} run {id}</code>) captures whatever changed, whether or not the agent also made its own explicit <code>git commit</code> following the <code>[ROLE]</code>-prefix convention.</div>
             </div>
             <div class="lifecycle-step">
               <div class="lifecycle-num">4</div>
-              <div><strong>Status + board update</strong> — agent appends to <code>.agents/&lt;role&gt;.status</code>; portal reconciles <code>tasks/board.md</code>.</div>
+              <div><strong>Status + board update</strong> — the agent appends to its own <code>.agents/&lt;role&gt;.status</code>; the portal reconciles <code>tasks/board.md</code> against every role's status file afterward, so a task reaches <em>Done</em> even if only one role was expected to move it.</div>
             </div>
           </div>
+          <p class="api-key-note" style="margin-top:1rem;">Nothing is ever silently lost: the <strong>Versions</strong> tab reads this same git history back, split into <strong>Local Code</strong> (those auto checkpoints), <strong>Git Code</strong> (commits that actually reached GitHub — pushed or pulled, not just local), <strong>Status</strong> (pure <span class="inline-code">.agents/*.status</span>/board bookkeeping commits, kept separate from real code), and <strong>Documents</strong> (Artifacts builds specifically, grouped by the file each one produced) — every version one click from a revert, with a real side-by-side diff.</p>
         </div>
       </div>
 
-      <!-- Default Models -->
+      <!-- Roles & Models -->
       <div class="dash-section">
-        <div class="dash-section-label">Default models</div>
+        <div class="dash-section-label">Roles &amp; models</div>
         <div class="dash-card">
           <div class="about-text">
-            <p>All defaults are free <span class="inline-code">opencode/*</span> cloud models — no auth, no API key, no signup required. Edit <span class="inline-code">center/agents.json</span> to change.</p>
+            <p>Edit <span class="inline-code">center/agents.json</span> to change names, folders, and the model bound to each role. Free options (already present):</p>
           </div>
           <div class="models-grid">
             <div class="model-item"><span class="role-name"><span class="agent-dot pm" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>PM</span><code>opencode/big-pickle</code></div>
@@ -931,7 +950,7 @@
             <div class="model-item"><span class="role-name"><span class="agent-dot dba" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>DBA</span><code>opencode/mimo-v2.5-free</code></div>
             <div class="model-item"><span class="role-name"><span class="agent-dot infra" style="display:inline-block;width:6px;height:6px;vertical-align:middle;margin-right:6px;"></span>INFRA</span><code>opencode/nemotron-3-ultra-free</code></div>
           </div>
-          <p class="api-key-note" style="margin-top:1rem;">Add any model via <span class="inline-code">opencode models</span> — supports <span class="inline-code">ollama/</span>, <span class="inline-code">openrouter/</span>, etc. Old TUI tools (Codex / Claude / OpenHands) not needed.</p>
+          <p class="api-key-note" style="margin-top:1rem;">Every default above is a free <span class="inline-code">opencode/*</span> cloud model — no <span class="inline-code">opencode auth login</span>, no API key, no account signup required; confirmed working on a machine with zero opencode credentials configured. So a fresh install works end-to-end with no extra setup. Add any model via <span class="inline-code">opencode models</span> → opencode works with <span class="inline-code">provider/model</span> IDs, e.g. <span class="inline-code">ollama/qwen3:8b</span> (needs a local Ollama daemon running at <span class="inline-code">127.0.0.1:11434</span> with that model already <span class="inline-code">ollama pull</span>-ed), <span class="inline-code">openrouter/...</span> (needs its own API key). Register either kind from the <strong>Models</strong> dropdown in the topbar → <strong>⚙ Manage providers &amp; quota</strong>. Old TUI tools (Codex / Claude / OpenHands) are not needed — every role runs on opencode.</p>
         </div>
       </div>
 
@@ -943,20 +962,20 @@
             <div class="features-category">
               <h4>Chat Agents</h4>
               <div class="features-items">
-                <div class="feature-item">Plan-only conversation with any role (or General / Internal Documents) that never touches files or the board.</div>
+                <div class="feature-item">A plan-only conversation with any role (or General / Internal Documents) that never touches files, <span class="inline-code">.agents/</span>, or the board — for talking through an approach before committing an agent to it.</div>
               </div>
             </div>
             <div class="features-category">
               <h4>Adaptive Loop</h4>
               <div class="features-items">
-                <div class="feature-item"><strong>SIGNAL → SENSE → DECIDE → ACT → FEEDBACK → ADAPT</strong> background cycle.</div>
-                <div class="feature-item">Three modes: <span class="inline-code">observe</span> (detect + explain), <span class="inline-code">suggest</span> (propose, wait for approval), <span class="inline-code">auto</span> (safe decisions only).</div>
+                <div class="feature-item">An opt-in background <strong>SIGNAL → SENSE → DECIDE → ACT → FEEDBACK → ADAPT</strong> cycle. Every project change (a commit, a failed QA run, a manually reported event) becomes a signal; each tick picks an intent, a role, and a tool (a real run vs. a plan-only consult), acts through the same engine as a manual Run Agents click, and remembers whether it worked.</div>
+                <div class="feature-item">Three execution modes per project: <span class="inline-code">observe</span> (detect + explain only), <span class="inline-code">suggest</span> (propose, wait for your approval), <span class="inline-code">auto</span> (auto-execute <em>safe</em> decisions only — anything destructive or production-affecting always drops to <span class="inline-code">suggest</span>).</div>
               </div>
             </div>
             <div class="features-category">
               <h4>Agent Meeting</h4>
               <div class="features-items">
-                <div class="feature-item">Deliberate exception to "PM-only coordination" — spin up actual multi-role discussions, transcribed live.</div>
+                <div class="feature-item">The deliberate exception to "PM-only coordination": spin up an actual multi-role discussion when you want several agents to reason about something together, transcribed live.</div>
               </div>
             </div>
           </div>
@@ -967,25 +986,32 @@
       <div class="dash-section">
         <div class="dash-section-label">Feature tour</div>
         <div class="dash-card">
+          <p class="api-key-note" style="margin-bottom:1.25rem;">Everything below is a tab in the sidebar, scoped to whichever project is selected. All of it is optional beyond the core Run Agents flow.</p>
           <div class="features-list">
             <div class="features-category">
               <h4>Agents</h4>
               <div class="features-items">
-                <div class="feature-item"><strong>Agent Library</strong> — every role's current status, plus Manage Skills (shared catalog, assignable to any role).</div>
-                <div class="feature-item"><strong>Chat Agents</strong> · <strong>Adaptive Loop</strong> · <strong>Observability</strong> (Langfuse) · <strong>Audit Log</strong> · <strong>AI Brain</strong> (Neo4j knowledge graph).</div>
+                <div class="feature-item"><strong>Agent Library</strong> — every role's current status, at a glance, plus <strong>⚙ Manage Skills</strong>: a shared skill catalog (assignable to any role in any project) with full add/edit/delete — editing re-syncs the change into every project that already has that skill assigned, deleting is blocked while a skill's still assigned anywhere.</div>
+                <div class="feature-item"><strong>Chat Agents</strong> · <strong>Adaptive Loop</strong> · <strong>Observability</strong> (Langfuse tracing) · <strong>Audit Log</strong> (every error the portal itself hits) · <strong>AI Brain</strong> (cross-project memory/knowledge graph sync).</div>
               </div>
             </div>
             <div class="features-category">
               <h4>Project</h4>
               <div class="features-items">
-                <div class="feature-item"><strong>Run Agents</strong> · <strong>Agent Meeting</strong> · <strong>Prompt Log</strong> · <strong>Handoffs</strong> · <strong>Versions</strong> (side-by-side diff, revert) · <strong>Files</strong> · <strong>Data Copilot</strong>.</div>
+                <div class="feature-item"><strong>Run Agents</strong> · <strong>Agent Meeting</strong> · <strong>Prompt Log</strong> (every prompt ever sent, searchable) · <strong>Handoffs</strong> · <strong>Versions</strong> (side-by-side diff, revert) · <strong>Files</strong> · <strong>Data Copilot</strong> (ask questions of a connected database).</div>
               </div>
             </div>
             <div class="features-category">
               <h4>Tools</h4>
               <div class="features-items">
-                <div class="feature-item"><strong>Storage</strong> · <strong>Live Browser</strong> · <strong>Sketch</strong> (Excalidraw) · <strong>Artifacts</strong> (React/Tailwind → single HTML) · <strong>Documents</strong> (.docx) · <strong>Excel / Calc</strong>.</div>
-                <div class="feature-item"><strong>Visual Builder</strong> · <strong>Test Workflows</strong> (record + replay) · <strong>API Client</strong> (Bruno-style, .bru files, route sync from code).</div>
+                <div class="feature-item"><strong>Storage</strong> — central file manager for anything portal-managed.</div>
+                <div class="feature-item"><strong>Live Browser</strong> — a real browser session per project an agent can drive (and you can watch) via HTTP calls.</div>
+                <div class="feature-item"><strong>Sketch</strong> — a shared Excalidraw-style canvas an agent can draw on.</div>
+                <div class="feature-item"><strong>Artifacts</strong> — one-shot self-contained HTML builds (React/Tailwind bundled to a single file), version-tracked in the project's own git repo.</div>
+                <div class="feature-item"><strong>Documents</strong> — a .docx writer with prompt history, stored centrally (not in the project's git repo — see the Versions Documents category above).</div>
+                <div class="feature-item"><strong>Excel / Calc</strong> — spreadsheet generation/editing with a query interface.</div>
+                <div class="feature-item"><strong>Visual Builder</strong> · <strong>Test Workflows</strong> (record once via Live Browser, replay deterministically).</div>
+                <div class="feature-item"><strong>API Client</strong> — a <a href="https://github.com/usebruno/bruno" target="_blank">Bruno</a>-style request builder scoped to each project: collections saved as .bru-style text files in the project's own <span class="inline-code">api/</span> folder (git-tracked with the code), environments with <span class="inline-code">{{var}}</span> substitution, requests actually sent server-side (so CORS never blocks you), a safe post-response <span class="inline-code">bru.setEnvVar(...)</span> mini-script for chaining tokens between requests, and a <strong>⟳ Sync from code</strong> button that discovers endpoints already defined in the project (an OpenAPI/Swagger spec, or Laravel <span class="inline-code">routes/*.php</span>) and imports the ones not in the collection yet.</div>
               </div>
             </div>
             <div class="features-category">
@@ -998,7 +1024,7 @@
             <div class="features-category">
               <h4>Task Management</h4>
               <div class="features-items">
-                <div class="feature-item"><strong>AI Do</strong> — AI board + unified Agent Activity feed (Run Agents, Artifacts, Documents, Excel merged).</div>
+                <div class="feature-item"><strong>AI Do</strong> — the AI board (synced from <span class="inline-code">.agents/*.status</span>) <em>plus</em> a unified Agent Activity feed merging Run Agents, Artifacts, Documents, and Excel/Calc jobs into one record, so "did the AI actually do something" always has an answer regardless of which tool it went through.</div>
                 <div class="feature-item"><strong>To Do</strong> — tasks you manage yourself; agents never touch this list.</div>
               </div>
             </div>
@@ -1015,7 +1041,7 @@
               <div class="feature-item">Agents talk only through <span class="inline-code">.agents/*.status</span> files: <span class="inline-code">TIMESTAMP | STATE | MESSAGE</span></div>
               <div class="feature-item">States: <span class="inline-code">INIT PENDING ASSIGNED IN_PROGRESS DONE FIXED BLOCKED REVIEW CANCELLED</span></div>
               <div class="feature-item">Commits use role prefixes: <span class="inline-code">[PM] [BA] [DEV] [QA] [DBA] [INFRA]</span></div>
-              <div class="feature-item">PM is the only coordinator; no direct agent-to-agent chat</div>
+              <div class="feature-item">PM is the only coordinator; no direct agent-to-agent chat (Agent Meeting is the deliberate, opt-in exception)</div>
             </div>
           </div>
         </div>
@@ -1026,7 +1052,7 @@
         <div class="dash-section-label">API</div>
         <div class="dash-card">
           <div class="about-text">
-            <p>FastAPI auto-generates interactive docs at <span class="inline-code">/docs</span> (Swagger UI) and raw spec at <span class="inline-code">/openapi.json</span> when the portal is running.</p>
+            <p>FastAPI auto-generates full interactive docs at <span class="inline-code">/docs</span> (Swagger UI) and the raw spec at <span class="inline-code">/openapi.json</span> once the portal is running — that's the authoritative reference; there are well over a hundred routes by now across every tab above. The core project/run surface, for orientation:</p>
           </div>
           <div style="overflow-x:auto;margin-top:1rem;">
             <table class="api-table">
@@ -1034,14 +1060,14 @@
                 <tr><th>Method</th><th>Path</th><th>Purpose</th></tr>
               </thead>
               <tbody>
-                <tr><td><span class="method get">GET</span></td><td><code>/api/projects</code></td><td>List projects</td></tr>
-                <tr><td><span class="method post">POST</span></td><td><code>/api/projects</code></td><td>Register project + init .agents/</td></tr>
-                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}</code></td><td>Detail: statuses, board, handoffs, runs</td></tr>
-                <tr><td><span class="method post">POST</span></td><td><code>/api/projects/{id}/runs</code></td><td>Spawn agent {role, prompt, model?}</td></tr>
-                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/runs/{rid}/log</code></td><td>Tail a run's log</td></tr>
-                <tr><td><span class="method post">POST</span></td><td><code>/api/projects/{id}/status/{role}</code></td><td>Append manual status line</td></tr>
-                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/versions/grouped</code></td><td>Versions: local|git|status|documents|others</td></tr>
-                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/api-client/*</code></td><td>API Client collections/environments</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects</code></td><td>list projects</td></tr>
+                <tr><td><span class="method post">POST</span></td><td><code>/api/projects</code></td><td>register project + init .agents/</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}</code></td><td>detail: statuses, board, handoffs, runs</td></tr>
+                <tr><td><span class="method post">POST</span></td><td><code>/api/projects/{id}/runs</code></td><td>spawn an agent {role, prompt, model?}</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/runs/{rid}/log</code></td><td>tail a run's log</td></tr>
+                <tr><td><span class="method post">POST</span></td><td><code>/api/projects/{id}/status/{role}</code></td><td>append a manual status line</td></tr>
+                <tr><td><span class="method get">GET</span></td><td><code>/api/projects/{id}/versions/grouped</code></td><td>Versions tab, category=local|git|status|documents|others</td></tr>
+                <tr><td><span class="method get">GET</span>/<span class="method post">POST</span></td><td><code>/api/projects/{id}/api-client/*</code></td><td>API Client collections/environments/send/sync</td></tr>
               </tbody>
             </table>
           </div>
@@ -1054,20 +1080,28 @@
         <div class="dash-card">
           <div class="cmd-box" style="font-size:0.78rem;line-height:1.7;">
             <span class="dir">center/</span>
-            <div>├── <span class="cmd">agents.json</span>         <span class="comment"># role → model + descriptions (edit me)</span></div>
-            <div>├── <span class="cmd">run.sh</span>               <span class="comment"># venv + uvicorn → http://127.0.0.1:9999</span></div>
-            <div>├── <span class="cmd">requirements.txt</span>     <span class="comment"># fastapi, uvicorn, httpx, playwright, langfuse, neo4j...</span></div>
-            <div>├── <span class="dir">data/</span>                <span class="comment"># projects.json, run logs, per-feature state</span></div>
+            <div>├── <span class="cmd">agents.json</span>          <span class="comment"># role → model + descriptions (edit me)</span></div>
+            <div>├── <span class="cmd">run.sh</span>                <span class="comment"># venv + uvicorn → http://127.0.0.1:9999</span></div>
+            <div>├── <span class="cmd">requirements.txt</span>      <span class="comment"># fastapi, uvicorn, httpx, playwright, langfuse, neo4j...</span></div>
+            <div>├── <span class="dir">data/</span>                 <span class="comment"># projects.json registry, run logs, per-feature state</span></div>
             <div>├── <span class="dir">app/</span></div>
-            <div>│   ├── <span class="cmd">main.py</span>           <span class="comment"># every FastAPI route</span></div>
-            <div>│   ├── <span class="cmd">core.py</span>           <span class="comment"># registry, CLAUDE.md template, roles, spawn_run</span></div>
-            <div>│   ├── <span class="cmd">versioning.py</span>     <span class="comment"># git checkpoint/revert/diff</span></div>
-            <div>│   ├── <span class="cmd">adaptive_loop.py</span>  <span class="comment"># SIGNAL→SENSE→DECIDE→ACT→FEEDBACK→ADAPT</span></div>
-            <div>│   ├── <span class="cmd">agent_meeting.py</span>  <span class="comment"># multi-agent discussion</span></div>
-            <div>│   └── <span class="cmd">...</span>               <span class="comment"># browser, brain, observability, model_bandit</span></div>
+            <div>│   ├── <span class="cmd">main.py</span>            <span class="comment"># every FastAPI route</span></div>
+            <div>│   ├── <span class="cmd">core.py</span>            <span class="comment"># registry, CLAUDE.md template, roles, spawn_run, status/board</span></div>
+            <div>│   ├── <span class="cmd">versioning.py</span>       <span class="comment"># git checkpoint/revert/diff underlying the Versions tab</span></div>
+            <div>│   ├── <span class="cmd">git_remote.py</span>       <span class="comment"># push/pull/remote status, conflict resolution</span></div>
+            <div>│   ├── <span class="cmd">api_client.py</span>       <span class="comment"># API Client: .bru CRUD, send proxy, route sync</span></div>
+            <div>│   ├── <span class="cmd">bru_format.py</span>       <span class="comment"># the .bru-style text format itself</span></div>
+            <div>│   ├── <span class="cmd">adaptive_loop.py</span>    <span class="comment"># the SIGNAL→SENSE→DECIDE→ACT→FEEDBACK→ADAPT cycle</span></div>
+            <div>│   ├── <span class="cmd">agent_meeting.py</span>    <span class="comment"># multi-agent discussion feature</span></div>
+            <div>│   ├── <span class="cmd">documents.py</span> / <span class="cmd">calc.py</span> / <span class="cmd">visual_builder.py</span> / <span class="cmd">qa_workflow.py</span> / <span class="cmd">pmo.py</span></div>
+            <div>│   ├── <span class="cmd">browser.py</span> / <span class="cmd">oc_engine.py</span>  <span class="comment"># Live Browser session, opencode process control</span></div>
+            <div>│   ├── <span class="cmd">knowledge_graph.py</span> / <span class="dir">brain/</span>  <span class="comment"># AI Brain's Neo4j sync + memory</span></div>
+            <div>│   └── <span class="cmd">observability.py</span> / <span class="cmd">model_bandit.py</span> / <span class="cmd">model_providers.py</span> / <span class="cmd">services_status.py</span></div>
             <div>└── <span class="dir">static/</span></div>
-            <div>    ├── <span class="cmd">index.html</span>      <span class="comment"># shell, theming, EN/MS translations</span></div>
-            <div>    └── <span class="cmd">app.js</span>          <span class="comment"># most tabs' logic</span></div>
+            <div>    ├── <span class="cmd">index.html</span> + <span class="cmd">style.css</span> + <span class="cmd">i18n.js</span>   <span class="comment"># shell, theming, EN/MS translations</span></div>
+            <div>    ├── <span class="cmd">app.js</span>                              <span class="comment"># most tabs' logic</span></div>
+            <div>    └── <span class="cmd">api_client.js</span> / <span class="cmd">qa_workflow.js</span> / <span class="cmd">visual_builder.js</span> / <span class="cmd">sketch.js</span> /</div>
+            <div>        <span class="cmd">agent_meeting.js</span> / <span class="cmd">pmo.js</span> / <span class="cmd">brain.js</span> / <span class="cmd">observability.js</span>  <span class="comment"># one module per bigger tool</span></div>
           </div>
         </div>
       </div>
@@ -1077,8 +1111,15 @@
         <div class="dash-section-label">Observability (optional)</div>
         <div class="dash-card">
           <div class="about-text">
-            <p>Traces agent runs, LLM calls, and DB queries to <a href="https://langfuse.com" target="_blank">Langfuse</a> — self-hosted or Cloud. Connect via the Observability tab or <span class="inline-code">.env</span> variables (<span class="inline-code">LANGFUSE_HOST</span>, <span class="inline-code">LANGFUSE_PUBLIC_KEY</span>, <span class="inline-code">LANGFUSE_SECRET_KEY</span>). Leave unset to disable.</p>
+            <p>The <strong>Observability</strong> tab traces agent runs, LLM calls, and DB queries to <a href="https://langfuse.com" target="_blank">Langfuse</a> — self-hosted (its own separate stack, see <span class="inline-code">docker/langfuse-compose.yml</span> and langfuse.com/self-hosting) or Langfuse Cloud. Connect it either way, no restart needed:</p>
           </div>
+          <div class="features-list" style="margin-top:0.75rem;">
+            <div class="features-items">
+              <div class="feature-item"><strong>In the app</strong> — open the Observability tab, fill in Host / Public key / Secret key, and save. Stored locally in <span class="inline-code">data/observability_settings.json</span> (secret key never echoed back to the UI after saving).</div>
+              <div class="feature-item"><strong>Via .env</strong> — set <span class="inline-code">LANGFUSE_HOST</span>, <span class="inline-code">LANGFUSE_PUBLIC_KEY</span>, and <span class="inline-code">LANGFUSE_SECRET_KEY</span> (used as a fallback whenever the in-app settings are empty; needed for the Docker Compose path).</div>
+            </div>
+          </div>
+          <p class="api-key-note" style="margin-top:0.75rem;">Leave both unset to keep it disabled with no effect on anything else.</p>
         </div>
       </div>
 
@@ -1135,7 +1176,19 @@
     // Talk to the real backend (server.js -> /api/*). Returns null when no
     // backend is reachable, so callers fall back to the local-only
     // (localStorage) demo mode.
+    //
+    // Once we learn there's no backend, remember it for the rest of this
+    // browser tab (sessionStorage) so we stop firing (and console-logging)
+    // doomed /api requests on every page load.
+    function noBackendKnown() {
+      return sessionStorage.getItem('agentix_no_backend') === '1';
+    }
+    function markNoBackend() {
+      sessionStorage.setItem('agentix_no_backend', '1');
+    }
+
     async function apiPost(path, body) {
+      if (noBackendKnown()) return null;
       try {
         const res = await fetch(path, {
           method: 'POST',
@@ -1147,22 +1200,25 @@
         // with an HTML/plain error page for an unknown route or method —
         // never application/json. Treat anything else as "no backend".
         const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) return null;
+        if (!ct.includes('application/json')) { markNoBackend(); return null; }
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
+        markNoBackend();
         return null;
       }
     }
 
     async function apiGet(path) {
+      if (noBackendKnown()) return null;
       try {
         const res = await fetch(path, { credentials: 'include' });
         const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) return null;
+        if (!ct.includes('application/json')) { markNoBackend(); return null; }
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
+        markNoBackend();
         return null;
       }
     }

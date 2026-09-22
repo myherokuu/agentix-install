@@ -183,7 +183,19 @@
     // Ask the real backend (server.js -> GET /api/validate-key) first.
     // Returns null when no backend is reachable, so the caller falls back
     // to the local-only (localStorage) demo check instead.
+    //
+    // Once we learn there's no backend, remember it for the rest of this
+    // browser tab (sessionStorage) so we stop firing (and console-logging)
+    // doomed /api requests every time "Check" is clicked.
+    function noBackendKnown() {
+      return sessionStorage.getItem('agentix_no_backend') === '1';
+    }
+    function markNoBackend() {
+      sessionStorage.setItem('agentix_no_backend', '1');
+    }
+
     async function apiValidate(apiKey) {
+      if (noBackendKnown()) return null;
       try {
         const res = await fetch('api/validate-key?api_key=' + encodeURIComponent(apiKey), {
           credentials: 'include',
@@ -192,10 +204,11 @@
         // with an HTML/plain error page for an unknown route — never
         // application/json. Treat anything else as "no backend".
         const ct = res.headers.get('content-type') || '';
-        if (!ct.includes('application/json')) return null;
+        if (!ct.includes('application/json')) { markNoBackend(); return null; }
         const data = await res.json();
         return { ok: res.ok, data };
       } catch (e) {
+        markNoBackend();
         return null;
       }
     }
