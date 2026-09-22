@@ -185,9 +185,14 @@
     // to the local-only (localStorage) demo check instead.
     async function apiValidate(apiKey) {
       try {
-        const res = await fetch('/api/validate-key?api_key=' + encodeURIComponent(apiKey), {
+        const res = await fetch('api/validate-key?api_key=' + encodeURIComponent(apiKey), {
           credentials: 'include',
         });
+        // A static host (GitHub Pages, file://) with no server.js answers
+        // with an HTML/plain error page for an unknown route — never
+        // application/json. Treat anything else as "no backend".
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) return null;
         const data = await res.json();
         return { ok: res.ok, data };
       } catch (e) {

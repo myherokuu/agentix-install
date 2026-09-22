@@ -238,6 +238,11 @@
           credentials: 'include',
           body: JSON.stringify(body || {}),
         });
+        // A static host (GitHub Pages, file://) with no server.js answers
+        // with an HTML/plain error page for an unknown route or method —
+        // never application/json. Treat anything else as "no backend".
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) return null;
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
@@ -248,6 +253,8 @@
     async function apiGet(path) {
       try {
         const res = await fetch(path, { credentials: 'include' });
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) return null;
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
@@ -270,7 +277,7 @@
 
     // Check if already logged in (server session first, then local fallback)
     (async () => {
-      const me = await apiGet('/api/me');
+      const me = await apiGet('api/me');
       if (me && me.ok) {
         window.location.href = 'dashboard.html';
         return;
@@ -291,7 +298,7 @@
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
-      const server = await apiPost('/api/login', { email, password });
+      const server = await apiPost('api/login', { email, password });
 
       if (server) {
         // Real backend is reachable — it's the source of truth.
@@ -347,7 +354,7 @@
       btn.disabled = true;
       btn.textContent = 'Creating account...';
 
-      const server = await apiPost('/api/register', { name, email, password });
+      const server = await apiPost('api/register', { name, email, password });
 
       if (server) {
         if (!server.ok) {

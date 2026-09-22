@@ -1143,6 +1143,11 @@
           credentials: 'include',
           body: JSON.stringify(body || {}),
         });
+        // A static host (GitHub Pages, file://) with no server.js answers
+        // with an HTML/plain error page for an unknown route or method —
+        // never application/json. Treat anything else as "no backend".
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) return null;
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
@@ -1153,6 +1158,8 @@
     async function apiGet(path) {
       try {
         const res = await fetch(path, { credentials: 'include' });
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) return null;
         const data = await res.json();
         return { ok: res.ok, status: res.status, data };
       } catch (e) {
@@ -1161,7 +1168,7 @@
     }
 
     async function loadUser() {
-      const me = await apiGet('/api/me');
+      const me = await apiGet('api/me');
       if (me) {
         usingServer = true;
         if (!me.ok) { window.location.href = 'login.html'; return; }
@@ -1215,7 +1222,7 @@
       if (!confirm('Generate a new API key? The old one will stop working.')) return;
 
       if (usingServer) {
-        const res = await apiPost('/api/regenerate-key', {});
+        const res = await apiPost('api/regenerate-key', {});
         if (!res || !res.ok) { toast('Failed to regenerate key'); return; }
         currentUser.apiKey = res.data.apiKey;
       } else {
@@ -1237,7 +1244,7 @@
 
     // Logout
     document.getElementById('btn-logout').addEventListener('click', async () => {
-      if (usingServer) { await apiPost('/api/logout', {}); }
+      if (usingServer) { await apiPost('api/logout', {}); }
       localStorage.removeItem('agentix_session');
       window.location.href = 'login.html';
     });
