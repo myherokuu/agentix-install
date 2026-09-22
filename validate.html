@@ -180,7 +180,22 @@
       return JSON.parse(localStorage.getItem('agentix_users') || '[]');
     }
 
-    function validateKey(apiKey) {
+    // Ask the real backend (server.js -> GET /api/validate-key) first.
+    // Returns null when no backend is reachable, so the caller falls back
+    // to the local-only (localStorage) demo check instead.
+    async function apiValidate(apiKey) {
+      try {
+        const res = await fetch('/api/validate-key?api_key=' + encodeURIComponent(apiKey), {
+          credentials: 'include',
+        });
+        const data = await res.json();
+        return { ok: res.ok, data };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function validateKeyLocal(apiKey) {
       const users = getUsers();
       const user = users.find(u => u.apiKey === apiKey);
       if (!user) return { valid: false, error: 'Invalid API key' };
@@ -217,26 +232,27 @@
       doValidate(key);
     });
 
-    function doValidate(key) {
+    async function doValidate(key) {
       btn.disabled = true;
       btn.textContent = 'Checking...';
       resultBox.className = 'result-box';
       resultBox.style.display = 'none';
 
-      setTimeout(() => {
-        const result = validateKey(key);
+      const server = await apiValidate(key);
+      const result = server
+        ? (server.ok ? { valid: true, ...server.data } : { valid: false, error: server.data.error || 'Invalid API key' })
+        : validateKeyLocal(key);
 
-        if (result.valid) {
-          resultBox.className = 'result-box valid';
-          resultBox.innerHTML = `<strong>✓ Valid API key</strong><pre>${JSON.stringify(result, null, 2)}</pre>`;
-        } else {
-          resultBox.className = 'result-box invalid';
-          resultBox.innerHTML = `<strong>✗ ${result.error}</strong>`;
-        }
+      if (result.valid) {
+        resultBox.className = 'result-box valid';
+        resultBox.innerHTML = `<strong>✓ Valid API key</strong><pre>${JSON.stringify(result, null, 2)}</pre>`;
+      } else {
+        resultBox.className = 'result-box invalid';
+        resultBox.innerHTML = `<strong>✗ ${result.error}</strong>`;
+      }
 
-        btn.disabled = false;
-        btn.textContent = 'Check';
-      }, 200);
+      btn.disabled = false;
+      btn.textContent = 'Check';
     }
   </script>
 

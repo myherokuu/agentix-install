@@ -226,14 +226,62 @@
       return stored === hashPassword(password);
     }
 
-    // Check if already logged in
-    const currentUser = localStorage.getItem('agentix_session');
-    if (currentUser) {
-      window.location.href = 'dashboard.html';
+    // Talk to the real backend (server.js -> /api/*). Returns null when no
+    // backend is reachable (e.g. this page served statically with no
+    // server.js running behind it) so callers can fall back to the
+    // local-only (localStorage) demo mode instead of hanging or erroring.
+    async function apiPost(path, body) {
+      try {
+        const res = await fetch(path, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(body || {}),
+        });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data };
+      } catch (e) {
+        return null;
+      }
     }
 
+    async function apiGet(path) {
+      try {
+        const res = await fetch(path, { credentials: 'include' });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Keep a local mirror of the server user so validate.html's offline
+    // demo mode can also find it when there's no backend.
+    function mirrorUserLocally(user) {
+      const users = getUsers();
+      const idx = users.findIndex(u => u.id === user.id);
+      const record = {
+        id: user.id, name: user.name, email: user.email,
+        apiKey: user.apiKey, createdAt: user.createdAt || new Date().toISOString(),
+      };
+      if (idx === -1) users.push(record); else users[idx] = { ...users[idx], ...record };
+      saveUsers(users);
+    }
+
+    // Check if already logged in (server session first, then local fallback)
+    (async () => {
+      const me = await apiGet('/api/me');
+      if (me && me.ok) {
+        window.location.href = 'dashboard.html';
+        return;
+      }
+      if (localStorage.getItem('agentix_session')) {
+        window.location.href = 'dashboard.html';
+      }
+    })();
+
     // Login
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearErrors();
       const btn = loginForm.querySelector('.login-btn');
@@ -243,6 +291,23 @@
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
+      const server = await apiPost('/api/login', { email, password });
+
+      if (server) {
+        // Real backend is reachable — it's the source of truth.
+        if (!server.ok) {
+          showError(loginForm, server.data.error || 'Invalid email or password');
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+          return;
+        }
+        mirrorUserLocally(server.data.user);
+        localStorage.setItem('agentix_session', server.data.user.id);
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      // No backend reachable — fall back to local-only demo mode.
       setTimeout(() => {
         const users = getUsers();
         const user = users.find(u => u.email === email.toLowerCase());
@@ -260,7 +325,7 @@
     });
 
     // Register
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearErrors();
       const btn = registerForm.querySelector('.login-btn');
@@ -282,6 +347,22 @@
       btn.disabled = true;
       btn.textContent = 'Creating account...';
 
+      const server = await apiPost('/api/register', { name, email, password });
+
+      if (server) {
+        if (!server.ok) {
+          showError(registerForm, server.data.error || 'Registration failed');
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+          return;
+        }
+        mirrorUserLocally(server.data.user);
+        localStorage.setItem('agentix_session', server.data.user.id);
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      // No backend reachable — fall back to local-only demo mode.
       setTimeout(() => {
         const users = getUsers();
 

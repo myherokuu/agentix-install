@@ -1118,6 +1118,8 @@
     });
 
     // Auth
+    let usingServer = false;
+
     function getUsers() {
       return JSON.parse(localStorage.getItem('agentix_users') || '[]');
     }
@@ -1130,7 +1132,45 @@
       return 'ak_' + Array.from(crypto.getRandomValues(new Uint8Array(24))).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    function loadUser() {
+    // Talk to the real backend (server.js -> /api/*). Returns null when no
+    // backend is reachable, so callers fall back to the local-only
+    // (localStorage) demo mode.
+    async function apiPost(path, body) {
+      try {
+        const res = await fetch(path, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(body || {}),
+        });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function apiGet(path) {
+      try {
+        const res = await fetch(path, { credentials: 'include' });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function loadUser() {
+      const me = await apiGet('/api/me');
+      if (me) {
+        usingServer = true;
+        if (!me.ok) { window.location.href = 'login.html'; return; }
+        currentUser = me.data.user;
+        render();
+        return;
+      }
+
+      usingServer = false;
       const sessionId = localStorage.getItem('agentix_session');
       if (!sessionId) { window.location.href = 'login.html'; return; }
       const users = getUsers();
@@ -1171,14 +1211,22 @@
     });
 
     // Regenerate key
-    document.getElementById('btn-regen').addEventListener('click', () => {
+    document.getElementById('btn-regen').addEventListener('click', async () => {
       if (!confirm('Generate a new API key? The old one will stop working.')) return;
-      const users = getUsers();
-      const idx = users.findIndex(u => u.id === currentUser.id);
-      if (idx === -1) return;
-      users[idx].apiKey = generateApiKey();
-      saveUsers(users);
-      currentUser = users[idx];
+
+      if (usingServer) {
+        const res = await apiPost('/api/regenerate-key', {});
+        if (!res || !res.ok) { toast('Failed to regenerate key'); return; }
+        currentUser.apiKey = res.data.apiKey;
+      } else {
+        const users = getUsers();
+        const idx = users.findIndex(u => u.id === currentUser.id);
+        if (idx === -1) return;
+        users[idx].apiKey = generateApiKey();
+        saveUsers(users);
+        currentUser = users[idx];
+      }
+
       render();
       keyVisible = false;
       document.getElementById('api-key-text').textContent = '••••••••••••••••••••••••';
@@ -1188,7 +1236,8 @@
     });
 
     // Logout
-    document.getElementById('btn-logout').addEventListener('click', () => {
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      if (usingServer) { await apiPost('/api/logout', {}); }
       localStorage.removeItem('agentix_session');
       window.location.href = 'login.html';
     });
